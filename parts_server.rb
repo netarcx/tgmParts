@@ -21,19 +21,19 @@ module CheesyParts
     # set :static, false
     def self.run!
     	super do |server|
-    	   server.ssl=true
-               server.ssl_options = {
+    	  server.ssl=true
+        server.ssl_options = {
                  :cert_chain_file  => File.dirname(__FILE__) + "/fullchain.pem",
                  :private_key_file => File.dirname(__FILE__) + "/privkey.pem",
                  :verify_peer      => false
-               }
-            end
-        end
-        use Rack::Session::Cookie, :key => "rack.session", :expire_after => 3600
-        before do
-          # Enforce authentication for all routes except login and user registration.
-          @user = User[session[:user_id]]
-          authenticate! unless ["/login", "/register"].include?(request.path)
+        }
+      end
+    end
+    use Rack::Session::Cookie, :key => "rack.session", :expire_after => 3600
+    before do
+      # Enforce authentication for all routes except login and user registration.
+      @user = User[session[:user_id]]
+      authenticate! unless ["/login", "/register"].include?(request.path)
 
 	  if CheesyCommon::Config.slack_enabled
 		  # Initialize slack bot
@@ -670,7 +670,7 @@ module CheesyParts
         order = Order.where(:project_id => @project.id, :vendor_name => params[:vendor],
                             :status => "open").first
         if order.nil?
-          order = Order.create(:project => @project, :vendor_name => params[:vendor], :status => "open")
+          order = Order.create(:project => @project, :vendor_name => params[:vendor], :status => "open", :reimbursed => 0)
         end
         order_id = order.id
       end

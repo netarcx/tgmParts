@@ -9,13 +9,16 @@
   <% elsif @user && @user.theme?("cyborg") %>
     <link href="/css/cyborg/bootstrap.min.css" rel="stylesheet">
   <% else %>
-  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/bootstrap-4/css/bootstrap.css" rel="stylesheet">
   <% end %>
   <link href="/css/bootstrap-datepicker.css" rel="stylesheet">
-  <link href='/css/css.css' rel='stylesheet' type='text/css' />
-  <script src="/js/jquery-1.8.3.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
+  <link href='/bootstrap-4/css/css.css' rel='stylesheet' type='text/css' />
+  <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet" type="text/css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="/bootstrap-4/js/bootstrap.min.js"></script>
   <script src="/js/bootstrap-datepicker.js"></script>
+
   <script>
     var vendors = [];
     <% Order.all.map(&:vendor_name).to_set.each do |vendor| %>
@@ -25,56 +28,55 @@
   <script src="/js/js.js"></script>
 </head>
 <body>
-  <div class="navbar">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </a>
-        <a class="brand" href="/">Deep Blue Parts</a>
-        <div class="nav-collapse collapse">
-          <% if @user %>
-            <ul class="nav">
-              <li>
-                <a href="/projects"> <i class="icon-th-large icon-black"></i> Projects</a>
-              </li>
-              <li>
-                <a href="/dashboards"> <i class="icon-list-alt icon-black"></i> Dashboards</a>
-              </li>
-	      <% if CheesyCommon::Config.enable_ordering %>
-		      <li>
-			<a href="/orders"> <i class="icon-shopping-cart icon-black"></i> Orders</a>
-		      </li>
-	      <% end %>
-              <% if @user.can_administer? %>
-                <li>
-                  <a href="/users"> <i class="icon-th-list icon-black"></i> Users</a>
+  <header>
+    <% if @user %>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="/">Deep Blue Parts</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/projects"><i class="fas th-large"></i>Projects</a>
                 </li>
-              <% end %>
-	      <li>
-	        <a href="https://docs.google.com/document/d/1v1h-3xQSoYg9L7vz9q6_UCTyfBSA6E2ZJy0iSjGZFCI/edit?usp=sharing" target="_blank"> <i class="icon-book icon-black"></i> How-To</a>
-	      </li>
-            </ul>
-            <div class="pull-right">
-              <ul class="nav pull-right">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i>
-                    <%= @user.first_name %> <%= @user.last_name %> <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a href="/logout"><i class="icon-off"></i> Logout</a>
-                      <% if @user.wordpress_user_id.nil? %>
-                        <a href="/user/prefrences"><i class="icon-wrench"></i> User Preferences</a>
-                      <% end %>
-                    </li>
-                  </ul>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/dashboards"><i class="fas columns"></i>Dashboards</a>
+                </li>
+
+                <% if CheesyCommon::Config.enable_ordering %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/orders"><i class="fas shopping-cart"></i>Orders</a>
+                  </li>
+                <% end %>
+
+                <% if @user.can_administer? %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/users"><i class="fas users"></i>Users</a>
+                  </li>
+                <% end %>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="https://docs.google.com/document/d/1v1h-3xQSoYg9L7vz9q6_UCTyfBSA6E2ZJy0iSjGZFCI/edit?usp=sharing"><i class="fas book"></i>Documentation</a>
+                </li>
+
+              </ul>
+              <ul class="navbar-nav float-right ml-auto">
+                <li class="nav-item dropdown float-right">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= @user.first_name %> <%= @user.last_name %></a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/user/preferences"><i class="fas cogs"></i>User Preferences</a>
+                    <a class="dropdown-item" href="/logout"><i class="fas sign-out-alt"></i>Logout</a>
+                  </div>
                 </li>
               </ul>
             </div>
-          <% end %>
-        </div>
+
+
       </div>
-    </div>
-  </div>
+      </nav>
+    <% end %>
+  </header>

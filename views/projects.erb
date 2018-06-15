@@ -1,17 +1,17 @@
 <%= erb :header %>
 
-<div class="container">
+<div class="container nav-sep">
   <div class="row">
-    <div class="span2">
+    <div class="col-8">
       <h2>Projects</h2>
     </div>
-    <% if @user.can_administer? %>
-      <div class="pull-right" style="margin-top: 20px;">
-        <a href="/new_project" class="btn btn-success btn-small">
-          <i class="icon-white icon-file"></i> New Project
+    <div class="col-4">
+      <% if @user.can_administer? %>
+        <a href="/new_project" class="btn btn-success float-right">
+          New Project
         </a>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
   <div class="well">
   <% Project.each do |project| %>
