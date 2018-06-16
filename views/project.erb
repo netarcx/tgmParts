@@ -3,10 +3,10 @@
 <div class="container nav-sep">
 
   <div class="row">
-    <div class="col-8">
+    <div class="col">
       <h3><b><%= @project.name %> - All Parts & Assemblies</b></h3>
     </div>
-    <div class="col-4">
+    <div class="col">
       <% if @user.can_edit? %>
         <div class="float-right">
           <a href="/projects/<%= @project.id %>/new_part?type=part" class="btn btn-success btn-small">
@@ -19,23 +19,20 @@
       <% end %>
     </div>
   </div>
+  <hr>
 
   <%= erb :parts_list, :locals => { :parts => Part.where(:project_id => @project.id).order(@part_sort) } %>
   <hr>
 
   <div class="row">
     <div class="col-3">
-        <span class="label label-info">Project Prefix: </span> <%= @project.part_number_prefix %><br /><br />
+        <span class="label label-info">Project Prefix: </span><b class="ml-1"><%= @project.part_number_prefix %></b>
     </div>
     <div class="col-9">
       <% if @user.can_administer? %>
         <div class="float-right">
-          <a href="/projects/<%= @project.id %>/edit" class="btn btn-primary btn-small">
-            <i class="icon-white icon-pencil"></i> Edit this project
-          </a>
-          <a href="/projects/<%= @project.id %>/delete" class="btn btn-danger btn-small">
-            <i class="icon-white icon-trash"></i> Delete this project
-          </a>
+          <a href="/projects/<%= @project.id %>/edit" class="btn btn-primary btn-small">Edit This Project</a>
+          <a href="/projects/<%= @project.id %>/delete" class="btn btn-danger btn-small">Delete This Project</a>
         </div>
       <% end %>
     </div>

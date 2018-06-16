@@ -1,5 +1,5 @@
 
-.bg-login {
+.bg-full {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -11,8 +11,18 @@
   align-items: center;
   padding-top: 40px;
   padding-bottom: 40px;
+}
+
+.bg-login {
   background-color: #1e617a;
 }
+
+.bg-warn {
+  background-color: #B33A3A;
+  color: #f8f9fa !important;
+}
+
+
 
 .form-signin {
   width: 100%;
@@ -54,6 +64,23 @@
 
 .nav-sep {
   margin-top: 5em;
+  margin-bottom: 5em;
+}
+
+input[type="text"] {
+  width: 100%;
+}
+
+.vertical-center {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .quickfadein {
@@ -97,11 +124,17 @@ label {
   font-weight: bold;
 }
 .label {
+  color: #f8f9fa !important;
   height: auto;
   padding: .5em;
   box-sizing: border-box;
   cursor: default;
   border-radius: .5em;
+  font-size: .75em;
+}
+
+.label-info{
+  background-color: #343a40;
 }
 .label-status-designing {
   background-color: #38e;

@@ -12,9 +12,8 @@
   <link href="/bootstrap-4/css/bootstrap.css" rel="stylesheet">
   <% end %>
   <link href="/css/bootstrap-datepicker.css" rel="stylesheet">
-  <link href='/bootstrap-4/css/css.css' rel='stylesheet' type='text/css' />
-  <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet" type="text/css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-
+  <link href="/bootstrap-4/css/css.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="/bootstrap-4/js/bootstrap.min.js"></script>
   <script src="/js/bootstrap-datepicker.js"></script>
@@ -40,36 +39,36 @@
               <ul class="navbar-nav mr-auto">
 
                 <li class="nav-item">
-                  <a class="nav-link" href="/projects"><i class="fas th-large"></i>Projects</a>
+                  <a class="nav-link" href="/projects"><i class="mr-1 far fa-folder-open"></i>Projects</a>
                 </li>
 
-                <li class="nav-item">
-                  <a class="nav-link" href="/dashboards"><i class="fas columns"></i>Dashboards</a>
+                <li class="nav-item ml-3">
+                  <a class="nav-link" href="/dashboards"><i class="mr-1 fas fa-chart-line"></i>Dashboards</a>
                 </li>
 
                 <% if CheesyCommon::Config.enable_ordering %>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/orders"><i class="fas shopping-cart"></i>Orders</a>
+                  <li class="nav-item ml-3">
+                    <a class="nav-link" href="/orders"><i class="mr-1 fas fa-shopping-cart"></i>Orders</a>
                   </li>
                 <% end %>
 
                 <% if @user.can_administer? %>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/users"><i class="fas users"></i>Users</a>
+                  <li class="nav-item ml-3">
+                    <a class="nav-link" href="/users"><i class="mr-1 fas fa-users"></i>Users</a>
                   </li>
                 <% end %>
 
-                <li class="nav-item">
-                  <a class="nav-link" href="https://docs.google.com/document/d/1v1h-3xQSoYg9L7vz9q6_UCTyfBSA6E2ZJy0iSjGZFCI/edit?usp=sharing"><i class="fas book"></i>Documentation</a>
+                <li class="nav-item ml-3">
+                  <a class="nav-link" href="https://docs.google.com/document/d/1v1h-3xQSoYg9L7vz9q6_UCTyfBSA6E2ZJy0iSjGZFCI/edit?usp=sharing"><i class="mr-1 fas fa-book"></i>Documentation</a>
                 </li>
 
               </ul>
               <ul class="navbar-nav float-right ml-auto">
                 <li class="nav-item dropdown float-right">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= @user.first_name %> <%= @user.last_name %></a>
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="mr-1 fas fa-user"></i><%= @user.first_name %> <%= @user.last_name %></a>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/user/preferences"><i class="fas cogs"></i>User Preferences</a>
-                    <a class="dropdown-item" href="/logout"><i class="fas sign-out-alt"></i>Logout</a>
+                    <a class="dropdown-item" href="/user/preferences"><i class="mr-1 fas fa-cog"></i>User Preferences</a>
+                    <a class="dropdown-item" href="/logout"><i class="mr-1 fas fa-sign-out-alt"></i>Logout</a>
                   </div>
                 </li>
               </ul>
