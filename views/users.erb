@@ -19,7 +19,7 @@
         <td><%= user.email %></td>
         <td><%= user.first_name %> <%= user.last_name %></td>
         <td><%= User::PERMISSION_MAP[user.permission] %></td>
-        <td><%= #user.last_active %></td>
+        <td></td>
         <td>
           <a href="/users/<%= user.id %>/edit" class="btn btn-primary btn-sm">
             <i class="fas fa-edit"></i>
