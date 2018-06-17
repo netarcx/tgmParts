@@ -16,7 +16,7 @@ class Part < Sequel::Model
                  "ordered" => "Waiting for materials",
                  # "drawing" => "Needs drawing",
                  "ready" => "Ready to manufacture",
-                 "manufacturing" => "Manufacturing in progress",
+                 "manufacturing" => "Manufacturing",
 #                 "outsourced" => "Waiting for outsourced manufacturing",
 #                 "welding" => "Waiting for welding",
 #                 "scotchbrite" => "Waiting for Scotch-Brite",
@@ -67,7 +67,3 @@ class Part < Sequel::Model
     end
   end
 end
-
-
-
-
