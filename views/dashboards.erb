@@ -1,18 +1,39 @@
 <%= erb :header %>
 
-<div class="container">
+<div class="container nav-sep">
   <div class="row">
-    <div class="span2">
+    <div class="col">
       <h2>Dashboards</h2>
     </div>
   </div>
-  <div class="well">
+  <hr>
+
+
+  <% i = 0 %>
+  <div class="row" style="margin-top: 1em;">
   <% Project.reject { |project| project.hide_dashboards == 1 }.each do |project| %>
-  <li><h4>
-    <a href="/projects/<%= project.id %>/dashboard"><%= project.name %> &ndash; Parts in progress</a>
-  </h4></li>
+    <div class="col-4">
+      <a href="/projects/<%= project.id %>/dashboard">
+        <div class="row">
+          <div class="col" align="center">
+            <img class="rounded" src="/img/placeholder.png">
+          </div>
+        </div>
+        <div class="row" style="margin-top: .5em;">
+          <div class="col mx-auto" style="width: auto;">
+            <h4 class="text-center"><%= project.name %> &ndash; Status</h4>
+          </div>
+        </div>
+      </a>
+    </div>
+    <% i += 1 %>
+    <% if (i % 3 == 0) %>
+  </div>
+  <div class="row" style="margin-top: 1em;">
+    <% end %>
   <% end %>
   </div>
+
 </div>
 
 <%= erb :footer %>

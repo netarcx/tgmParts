@@ -31,9 +31,9 @@
 
     <a href="/projects/<%= @part.project_id %>"><b><%= @part.project.name %></b></a>
 <% if @part.parent_part %>
-      <i class="icon-chevron-right"></i> &#62; <%= erb :part_tree, :locals => { :part => @part.parent_part } %>
+    <i class="fas fa-chevron-right"></i> <%= erb :part_tree, :locals => { :part => @part.parent_part } %>
 <% end %>
-    <i class="icon-chevron-right"></i> &#62; <b><%= @part.name %></b>
+    <i class="fas fa-chevron-right"></i> <b><%= @part.name %></b>
 
   <br />
 

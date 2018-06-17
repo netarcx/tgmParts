@@ -5,6 +5,7 @@
   <hr>
 
   <form action="/parts" method="POST">
+    <input type=hidden name=type value="<%= @type %>" />
     <div class="row">
       <div class="col-2">
         <label class="float-right">Project</label>
@@ -29,7 +30,7 @@
         <label class="float-right">Parent Assembly</label>
       </div>
       <div class="col-4">
-        <select style="width: 100%;" name="parent_part_id">
+        <select name="parent_part_id">
           <% @project.parts.select { |p| p.type == "assembly"}.each do |part| %>
           <option value="<%= part.id %>"<% if part.id == @parent_part_id.to_i %> selected<% end %>>
             <%= part.full_part_number %> - <%= part.name %>

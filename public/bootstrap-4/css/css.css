@@ -71,6 +71,10 @@ input[type="text"] {
   width: 100%;
 }
 
+select {
+  width: 100%;
+}
+
 .vertical-center {
   position: absolute;
   top: 0;

@@ -1,16 +1,23 @@
 <%= erb :header %>
 
-<div class="container">
-  <select class="pull-right" name="status" style="margin-top: 15px;"
-      onchange="changeDashboardFilter(<%= @project.id %>, this.value);">
-    <option value="all" selected>Filter by status...</option>
-    <% Part::STATUS_MAP.each_pair do |key, value| %>
-    <option value="<%= key %>"><%= value %></option>
-    <% end %>
-    <option value="drawing">Needs drawing</option>
-  </select>
-  <h2><%= @project.name %></h2>
-  <div id="dashboard-parts">
+<div class="container nav-sep">
+  <div class="row">
+    <div class="col-8">
+      <h2><%= @project.name %></h2>
+    </div>
+    <div class="col-4">
+      <select class="float-right" name="status" onchange="changeDashboardFilter(<%= @project.id %>, this.value);">
+      <option value="all" selected>Filter by status...</option>
+      <% Part::STATUS_MAP.each_pair do |key, value| %>
+        <option value="<%= key %>"><%= value %></option>
+      <% end %>
+      <option value="drawing">Needs drawing</option>
+      </select>
+    </div>
+  </div>
+  <hr>
+
+  <div class="mt-3" id="dashboard-parts">
     <%= erb :dashboard_parts %>
   </div>
 </div>

@@ -7,6 +7,7 @@ Sequel.migration do
       String :salt, :null => false
       String :permission, :null => false
       String :theme, :null => false
+      Integer :last_active
     end
   end
 end

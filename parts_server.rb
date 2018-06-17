@@ -540,11 +540,11 @@ module CheesyParts
       @user_edit.save
       redirect "/users"
     end
-    get "/user/prefrences" do
+    get "/user/preferences" do
       erb :user_prefs
     end
 
-    post "/user/prefrences" do
+    post "/user/preferences" do
       halt(400, "Invalid user.") if @user.nil?
       @user.email = params[:email] if params[:email]
       @user.first_name = params[:first_name] if params[:first_name]
@@ -552,7 +552,7 @@ module CheesyParts
       @user.set_password(params[:password]) if params[:password] && !params[:password].empty?
       @user.theme = params[:theme] if params[:theme]
       @user.save
-      redirect "/user/prefrences"
+      redirect "/user/preferences"
     end
 
     get "/users/:id/delete" do
@@ -586,7 +586,7 @@ module CheesyParts
       halt(400, "Missing password.") if params[:password].nil? || params[:password].empty?
       user = User.new(:email => params[:email], :first_name => params[:first_name],
                       :last_name => params[:last_name], :permission => "readonly",
-                      :enabled => 0, :theme => "")
+                      :enabled => 0, :theme => "", :last_active => 1)
       user.set_password(params[:password])
       user.save
       email_body = <<-EOS.dedent
