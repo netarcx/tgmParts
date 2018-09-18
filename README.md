@@ -1,6 +1,8 @@
 Deep Blue Parts
 ============
 
+## DBP is still under active development and no guarantees are made that the system will work right now. We plan to have it up and running for build season 2019.
+
 Deep Blue Parts is a web-based system for tracking parts through the design and manufacture cycle. It assigns
 part numbers with which CAD files can be saved to version control and stores information about parts'
 current manufacturing status.
