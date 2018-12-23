@@ -41,6 +41,16 @@
     <entry><h4 class="mt-2">Parts and Assemblies contained within this assembly:</h4></entry>
 
     <%= erb :parts_list, :locals => { :parts => Part.where(:parent_part_id => @part.id).order(@part_sort) } %>
+    <div class="row">
+      <div class="col">
+        <div class="float-right">
+          <a class="btn btn-success btn-small" href="/projects/<%= @part.project_id %>/new_part?type=assembly&parent_part_id=<%= @part.id %>">
+          <i class="icon-white icon-th"></i> Add COTS
+          </a>
+        </div>
+      </div>
+    </div>
+
 <% end %>
   <div class="row mt-2">
     <div class="col-4">
