@@ -22,7 +22,11 @@
       <a href="/projects/<%= project.id %>">
         <div class="row">
           <div class="col" align="center">
-            <img class="rounded" src="/img/placeholder.png">
+            <%if File.exist?("./uploads/projects/#{project.id}/avatar.png") %>
+              <img class="rounded" style="width:250px;height:250px;" src="./uploads/projects/<%= project.id %>/avatar.png">
+            <%else %>
+              <img class="rounded" src="/img/placeholder.png">
+            <%end %>
           </div>
         </div>
         <div class="row" style="margin-top: .5em;">

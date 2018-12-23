@@ -149,6 +149,7 @@ module CheesyParts
       halt(400, "Missing part number prefix.") if params[:part_number_prefix].nil?
 
       project = Project.create(:name => params[:name], :part_number_prefix => params[:part_number_prefix], :hide_dashboards => 0)
+
       redirect "/projects/#{project.id}"
     end
 
@@ -179,6 +180,17 @@ module CheesyParts
       if params[:part_number_prefix]
         @project.part_number_prefix = params[:part_number_prefix]
       end
+
+      if params[:avatar]
+        file = params[:avatar][:tempfile]
+        Dir.mkdir("./uploads/projects/#{@project.id}") unless Dir.exist?("./uploads/projects/#{@project.id}")
+        File.delete("./uploads/projects/#{@project.id}/avatar.png") if File.exist?("./uploads/projects/#{@project.id}/avatar.png")
+        File.open("./uploads/projects/#{@project.id}/avatar.png", 'wb') do |f|
+          f.write(file.read)
+        end
+      end
+
+
       @project.save
       redirect "/projects/#{params[:id]}"
     end
@@ -586,7 +598,7 @@ module CheesyParts
       halt(400, "Missing password.") if params[:password].nil? || params[:password].empty?
       user = User.new(:email => params[:email], :first_name => params[:first_name],
                       :last_name => params[:last_name], :permission => "readonly",
-                      :enabled => 0, :theme => "", :last_active => 1)
+                      :enabled => 0, :theme => "")
       user.set_password(params[:password])
       user.save
       email_body = <<-EOS.dedent
