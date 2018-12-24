@@ -10,7 +10,7 @@
 
 
   <% i = 0 %>
-  <div class="row" style="margin-top: 1em;">
+  <div class="row justify-content-center" style="margin-top: 1em;">
   <% Project.reject { |project| project.hide_dashboards == 1 }.each do |project| %>
     <div class="col-4">
       <a href="/projects/<%= project.id %>/dashboard">

@@ -197,7 +197,7 @@ module CheesyParts
 
     get "/projects/:id/delete" do
       require_permission(@user.can_administer?)
-
+      File.delete("./uploads/projects/#{@project.id}/avatar.png") if File.exist?("./uploads/projects/#{@project.id}/avatar.png")
       erb :project_delete
     end
 
