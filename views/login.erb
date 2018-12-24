@@ -1,28 +1,16 @@
 <%= erb :header %>
 
-<div class="container">
-  <div class="row">
-    <div class="span4 offset4 well">
-      <legend>Please Sign In</legend>
-      <% if CheesyCommon::Config.enable_wordpress_auth %>
-        <a href="<%= CheesyCommon::Config.members_url %>?site=parts&path=<%= @redirect %>"
-            class="btn btn-primary btn-block">
-          Click here to sign in with your team254.com account
-        </a>
-        <hr>
-      <% end %>
-      <% if @alert %>
-        <div class="alert alert-error">
-          <a class="close" data-dismiss="alert" href="#">×</a><%= @alert %>
-        </div>
-      <% end %>
-      <form action="?redirect=<%= @redirect %>" method="POST" action="" accept-charset="UTF-8">
-        <input type="text" class="span4" name="email" placeholder="E-mail">
-        <input type="password" class="span4" name="password" placeholder="Password">
-        <button type="submit" name="submit" class="btn btn-info btn-block">Sign in</button>
-      </form>
-      <center><a href="/register" class="btn btn-info btn-small">Register</a></center>
-    </div>
+<div class="bg-full bg-login">
+  <div class="container text-center text-light">
+    <form class="form-signin" action="?redirect=<%= @redirect %>" method="POST" accept-charset="UTF-8">
+      <img class="mb-4" src="/img/logo-basic-2018.png" alt="" width="70%" height="70%">
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email Address" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
+      <button class="btn btn-lg btn-primary btn-block form-submit" type="submit">Sign In</button>
+      <button class="btn btn-lg btn-primary btn-block" onclick="location.href='/register'">Register</button>
+    </form>
   </div>
 </div>
 

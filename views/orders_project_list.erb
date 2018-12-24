@@ -1,30 +1,46 @@
 <%= erb :header %>
 
 <% if CheesyCommon::Config.enable_ordering %>
-<div class="container">
+<div class="container nav-sep">
   <div class="row">
-    <div class="span2">
+    <div class="col">
       <h2>Orders</h2>
     </div>
   </div>
-  <div class="well">
+
+  <hr>
+
+  <% i = 0 %>
+  <div class="row justify-content-center" style="margin-top: 1em;">
   <% Project.reject { |project| project.hide_dashboards == 1 }.each do |project| %>
-    <li><h4>
-      <a href="/projects/<%= project.id %>/orders/open"><%= project.name %> &ndash; Open orders</a>
-    </h4></li>
-    <li><h4>
-      <a href="/projects/<%= project.id %>/orders/ordered"><%= project.name %> &ndash; Placed orders</a>
-    </h4></li>
-    <li><h4>
-      <a href="/projects/<%= project.id %>/orders/complete"><%= project.name %> &ndash; Received orders</a>
-    </h4></li>
-    <li><h4>
-      <a href="/projects/<%= project.id %>/orders/stats">
-        <%= project.name %> &ndash; Order totals and statistics
-      </a>
-    </h4></li>
-  <% end %>
+    <div class="col-4">
+
+        <div class="card mx-auto" style="width: 250px;">
+          <%if File.exist?("./uploads/projects/#{project.id}/avatar.png") %>
+            <img class="rounded card-img-top" style="width:250px;height:250px;" src="./uploads/projects/<%= project.id %>/avatar.png">
+          <%else %>
+            <img class="rounded card-img-top" src="/img/placeholder.png">
+          <%end %>
+
+          <div class="card-body"
+            <h4><b><%= project.name %> Orders</b></h4><hr>
+            <a href="/projects/<%= project.id %>/orders/open">Open</a><br>
+            <a href="/projects/<%= project.id %>/orders/ordered">Placed</a><br>
+            <a href="/projects/<%= project.id %>/orders/complete">Received</a><br>
+            <a href="/projects/<%= project.id %>/orders/stats">Totals and Stats</a>
+          </div>
+
+        </div>
+
+    </div>
+    <% i += 1 %>
+    <% if (i % 3 == 0) %>
   </div>
+  <div class="row" style="margin-top: 1em;">
+    <% end %>
+  <% end %>
+
+
 </div>
 <% end %>
 <%= erb :footer %>

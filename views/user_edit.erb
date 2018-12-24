@@ -1,8 +1,10 @@
 <%= erb :header %>
 
-<div class="container">
+<div class="container nav-sep">
   <h2>Edit User</h2>
-  <form action="" method="POST">
+  <hr>
+
+  <form class="form-signin" action="" method="POST">
     <label>E-mail</label>
     <input type="text" name="email" value="<%= @user_edit.email %>"/>
     <label>First Name</label>
@@ -12,7 +14,7 @@
     <label>Change Password</label>
     <input type="password" name="password" />
     <label>Verify Password</label>
-    <input type="password" name="password2" />
+    <input type="password" name="password2" /> <br>
     <label>Permission</label>
     <select name="permission">
       <% User::PERMISSION_MAP.each_pair do |key, value| %>

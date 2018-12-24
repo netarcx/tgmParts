@@ -1,10 +1,25 @@
 <%= erb :header %>
 
-<div class="container">
-  <h2>Are you sure you want to delete user <%= @user_delete.email %>?</h2>
-  <form action="" method="POST">
-    <input type="submit" class="btn btn-danger btn-medium" value="Yes" />
-  </form>
+<div class="bg-full bg-warn">
+  <div class="container nav-sep text-center">
+    <div class="row mb-5">
+      <div class="col">
+        <i class="fas fa-exclamation-triangle fa-7x quickfadein"></i>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-10 border-right">
+          <h2>Are you sure you want to delete user <%= @user_delete.email %>?</h2>
+      </div>
+      <div class="col-1 offset-1">
+        <form action="" method="POST">
+          <label class="float-right">
+            <input type="submit" class="btn btn-outline-light btn-lg border" value="Yes" />
+          </label>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 <%= erb :footer %>

@@ -1,122 +1,164 @@
 <%= erb :header %>
 
-<div class="container">
+<div class="container nav-sep">
   <div class="row">
-    <div class="span6 pull-left">
-	<h2><%= @part.type.capitalize %>: <%= @part.name %></h2>
+    <div class="col">
+	     <h2><%= @part.type.capitalize %>: <%= @part.name %></h2>
     </div>
-    <div class="span6">
-	  <% if @part.type == "part" && @user.can_edit? %>
-	    <div class="pull-right" style="margin-top: 15px;">
-	      <a href="/projects/<%= @part.project.id %>/new_part?type=part" class="btn btn-success btn-small">
-		<i class="icon-white icon-cog"></i> New Part
-	      </a>
-	      <a href="/projects/<%= @part.project.id %>/new_part?type=assembly" class="btn btn-success btn-small">
-		<i class="icon-white icon-th"></i> New Assembly
-	      </a>
-	    </div>
-	  <% elsif @part.type == "assembly" && @user.can_edit? %>
-	    <div class="pull-right" style="margin-top: 15px;">
-	    <a href="/projects/<%= @part.project_id %>/new_part?type=part&parent_part_id=<%= @part.id %>"
-		class="btn btn-success btn-small"><i class="icon-white icon-cog"></i> New Part</a>
-	    <a href="/projects/<%= @part.project_id %>/new_part?type=assembly&parent_part_id=<%= @part.id %>"
-		class="btn btn-success btn-small"><i class="icon-white icon-th"></i> New Assembly</a>
-	    </div>
-	  <% end %>
+    <div class="col">
+      <div class="float-right">
+  	     <% if @part.type == "part" && @user.can_edit? %>
+  	       <a href="/projects/<%= @part.project.id %>/new_part?type=part" class="btn btn-success btn-small">
+  		         <i class="icon-white icon-cog"></i> New Part
+  	       </a>
+  	       <a href="/projects/<%= @part.project.id %>/new_part?type=assembly" class="btn btn-success btn-small">
+  		         <i class="icon-white icon-th"></i> New Assembly
+  	       </a>
+  	     <% elsif @part.type == "assembly" && @user.can_edit? %>
+           <a class="btn btn-success btn-small" href="/projects/<%= @part.project_id %>/new_part?type=part&parent_part_id=<%= @part.id %>">
+             <i class="icon-white icon-cog"></i> New Part
+           </a>
+           <a class="btn btn-success btn-small" href="/projects/<%= @part.project_id %>/new_part?type=assembly&parent_part_id=<%= @part.id %>">
+             <i class="icon-white icon-th"></i> New Assembly
+           </a>
+
+         <% end %>
+      </div>
+	  </div>
+
     </div>
-  </div>
-  <div>
+    <hr>
+
     <a href="/projects/<%= @part.project_id %>"><b><%= @part.project.name %></b></a>
-    <% if @part.parent_part %>
-      <i class="icon-chevron-right"></i> <%= erb :part_tree, :locals => { :part => @part.parent_part } %>
-    <% end %>
-    <i class="icon-chevron-right"></i> <b><%= @part.name %></b>
-  </div>
+<% if @part.parent_part %>
+    <i class="fas fa-chevron-right"></i> <%= erb :part_tree, :locals => { :part => @part.parent_part } %>
+<% end %>
+    <i class="fas fa-chevron-right"></i> <b><%= @part.name %></b>
+
   <br />
 
-  <% if @part.type == "assembly" %>
-    <entry><b>Parts & assemblies contained within this assembly:</b></entry>
+<% if @part.type == "assembly" %>
+    <entry><h4 class="mt-2">Parts and Assemblies contained within this assembly:</h4></entry>
 
     <%= erb :parts_list, :locals => { :parts => Part.where(:parent_part_id => @part.id).order(@part_sort) } %>
-  <% end %>
-  <div class="row">
-    <div class="span4">
-    <table class="table table-striped table-condensed table-bordered" style="width: auto;">
-      <tr>
-        <td><b>Project</b></td>
-        <td><a href="/projects/<%= @part.project_id %>"><%= @part.project.name %></a></td>
-      </tr>
-      <tr><td ><b>Part Number</b></td><td class="js-copytextarea"><%= @part.full_part_number %> <button class="btn btn-mini btn-success js-textareacopybtn"><i class="icon-white icon-list-alt"></i></button></td></tr>
-      <tr>
-        <td><b>Status</b></td>
-        <td>
-          <span class="label label-status-<%= @part.status %>"><%= Part::STATUS_MAP[@part.status] %></span>
-        </td>
-      </tr>
-      <tr><td><b>Notes</b></td><td><%= (@part.notes || "").gsub("\n", "<br />") %></td></tr>
-      <% if @part.type == "part" %>
-        <tr><td><b>Manufacturing method</b></td><td><%= Part::MFG_MAP[@part.mfg_method] %></td></tr>
-        <tr><td><b>Finish type</b></td><td><%= Part::FINISH_MAP[@part.finish] %></td></tr>
-      <% end %>
-      <tr><td><b>Quantity required</b></td><td><%= @part.quantity %></td></tr>
-      <tr><td><b>Drawing created?</b></td><td><%= (@part.drawing_created == 1) ? "Yes" : "No" %></td></tr>
-      <tr><td><b>Revision Letter</b></td><td><%= @part.rev %></td></tr>
-
-      <%if @part.drawing_created == 1 %>
-  	<tr><td><b>Drawing Link</b></td><td><a href="<%= "/uploads/" + @part.full_part_number + "/drawing/" + @part.full_part_number + "_" + @part.rev + ".pdf" %>">Revision <%= @part.rev %></a></td></tr>
-      <% end %>
-
-       <%if File.file?("./uploads/"+ @part.full_part_number + "/docs/" + @part.full_part_number + ".pdf") %>
-  	<tr><td><b>Documentation Link</b></td><td><a href="<%= "/uploads/" + @part.full_part_number + "/docs/" + @part.full_part_number + ".pdf" %>">Link</a></td></tr>
-      <% end %>
-
-       <%if File.file?("./uploads/"+ @part.full_part_number + "/toolpath/" + @part.full_part_number + ".gcode") %>
-  	<tr><td><b>Toolpath Link</b></td><td><a href="<%= "/uploads/" + @part.full_part_number + "/toolpath/" + @part.full_part_number + ".gcode" %>">Link</a></td></tr>
-      <% end %>
-
-      <tr><td><b>Priority</b></td><td><%= Part::PRIORITY_MAP[@part.priority] %></td></tr>
-
-      <% unless @part.trello_link == "" %>
-	<tr><td><b>Trello Link</b></td>
-		<td><ol>
-			<% @part.trello_link.split(",").each do |url| %>
-				<li><a href="<%= url %>" target="_blank">Link</a></li>
-			<% end %>
-		</ol></td>
-	</tr>
-      <% end %>
-
-    </table>
-
-  <% if @user.is_shoptech? %>
-    <div class="row" style="margin-top: 0px;">
-	  <div class="span2">
-	      <a href="/parts/<%= @part.id %>/edit" class="btn btn-primary btn-small">
-		<i class="icon-white icon-pencil"></i> Edit this part
-	      </a>
-	  </div>
-	  <div class="span2">
-	      <a href="/parts/<%= @part.id %>/delete" class="btn btn-danger btn-small">
-		<i class="icon-white icon-trash"></i> Delete this part
-	      </a>
-	  </div>
-  </div>
-  <% end %>
-  <% if @user.can_edit? %>
-    <div class="row" style="margin-top: 10px;">
-  	  <div class="span2">
-  	      <a href="/parts/<%= @part.id %>/release" class="btn btn-success btn-small">
-  		<i class="icon-white icon-ok"></i> Release Part
-  	      </a>
-  	  </div>
+    <div class="row">
+      <div class="col">
+        <div class="float-right">
+          <a class="btn btn-success btn-small" href="/projects/<%= @part.project_id %>/new_part?type=cots&parent_part_id=<%= @part.id %>">
+          <i class="icon-white icon-th"></i> Add COTS
+          </a>
+        </div>
+      </div>
     </div>
-  <% end %>
+
+<% end %>
+  <div class="row mt-2">
+    <div class="col-4">
+      <table class="table table-hover table-bordered">
+        <tr>
+          <td><b>Project</b></td>
+          <td><a href="/projects/<%= @part.project_id %>"><%= @part.project.name %></a></td>
+        </tr>
+        <tr>
+          <td><b>Part Number</b></td>
+          <td><%= @part.full_part_number %></td>
+        </tr>
+        <tr>
+          <td><b>Designer</b></td>
+          <td><% #@TODO UPDATE PART MODEL @part.author %> Example Author</td>
+        </tr>
+        <tr>
+          <td><b>Status</b></td>
+          <td><span class="label label-status-<%= @part.status %>"><%= Part::STATUS_MAP[@part.status] %></span></td>
+        </tr>
+
+<% if @part.type == "part" %>
+        <tr>
+          <td><b>Manufacturing Method</b></td>
+          <td><%= Part::MFG_MAP[@part.mfg_method] %></td>
+        </tr>
+        <tr>
+          <td><b>Finish Type</b></td>
+          <td><%= Part::FINISH_MAP[@part.finish] %></td>
+        </tr>
+<% end %>
+        <tr>
+          <td><b>Quantity Required</b></td><td><%= @part.quantity %></td>
+        </tr>
+        <tr>
+          <td><b>Drawing Created?</b></td>
+          <td><%= (@part.drawing_created == 1) ? "Yes" : "No" %></td>
+        </tr>
+        <tr>
+          <td><b>Revision Letter</b></td>
+          <td><%= @part.rev %></td>
+        </tr>
+<%if @part.drawing_created == 1 %>
+        <tr>
+          <td><b>Drawing Link</b></td>
+          <td><a href="<%= "/uploads/" + @part.full_part_number + "/drawing/" + @part.full_part_number + "_" + @part.rev + ".pdf" %>">Revision <%= @part.rev %></a></td>
+        </tr>
+<% end %>
+<%if File.file?("./uploads/"+ @part.full_part_number + "/docs/" + @part.full_part_number + ".pdf") %>
+        <tr>
+          <td><b>Documentation Link</b></td>
+          <td><a href="<%= "/uploads/" + @part.full_part_number + "/docs/" + @part.full_part_number + ".pdf" %>">Link</a></td>
+        </tr>
+<% end %>
+<%if File.file?("./uploads/"+ @part.full_part_number + "/toolpath/" + @part.full_part_number + ".gcode") %>
+        <tr>
+          <td><b>Toolpath Link</b></td>
+          <td><a href="<%= "/uploads/" + @part.full_part_number + "/toolpath/" + @part.full_part_number + ".gcode" %>">Link</a></td>
+        </tr>
+<% end %>
+        <tr>
+          <td><b>Priority</b></td>
+          <td><%= Part::PRIORITY_MAP[@part.priority] %></td>
+        </tr>
+        <tr>
+          <td><b>Notes</b></td>
+          <td><%= (@part.notes || "").gsub("\n", "<br />") %></td>
+        </tr>
+
+<% if @part.trello_link != "" and CheesyCommon::Config.trello_enabled %>
+      	<tr>
+          <td><b>Trello Link</b></td>
+  		    <td>
+            <ol>
+              <% @part.trello_link.split(",").each do |url| %>
+  				    <li><a href="<%= url %>" target="_blank">Link</a></li>
+  			      <% end %>
+  		      </ol>
+          </td>
+        </tr>
+<% end %>
+      </table>
+
+<% if @user.is_shoptech? %>
+      <div class="row" style="margin-top: 0px;">
+        <div class="col">
+          <a href="/parts/<%= @part.id %>/edit" class="btn btn-primary btn-small">
+            <i class="icon-white icon-pencil"></i> Edit This Part
+          </a>
+        </div>
+        <div class="col">
+          <a href="/parts/<%= @part.id %>/delete" class="btn btn-danger btn-small float-right">
+            <i class="icon-white icon-trash"></i> Delete This Part
+          </a>
+        </div>
+      </div>
+<% end %>
+    </div><!-- /col-4 -->
+    <div class="col-8 float-right">
+<%if @part.drawing_created == 1 %>
+      <div class="embed-responsive embed-responsive-4by3">
+        <object class="embed-responsive-item" data="<%= "/uploads/" + @part.full_part_number + "/drawing/" + @part.full_part_number + "_" + @part.rev + ".pdf" %>" type="application/pdf"></object>
+      </div>
+<% end %>
   </div>
-<div class="span8 pull-right">
-  <%if @part.drawing_created == 1 %>
-    <embed src="<%= "/uploads/" + @part.full_part_number + "/drawing/" + @part.full_part_number + "_" + @part.rev + ".pdf" %>" width="600" height="400" type='application/pdf'>
-  <% end %>
 </div>
+</div>
+
 
 
 <%= erb :footer %>

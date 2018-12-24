@@ -1,80 +1,141 @@
 <%= erb :header %>
 
-<div class="container">
+<div class="container nav-sep">
   <h2>Edit Part</h2>
-    <form action="" method="POST" enctype="multipart/form-data">
-	<div class="row">
-	  <div clas="span6">
+  <hr>
+
+  <form action="" method="POST" enctype="multipart/form-data">
+	<div class="row mb-4">
+	  <div class="col">
 	    <input type="hidden" name="referrer" value="<%= @referrer %>" />
 	    <label><span class="label label-info">Part Number</span> <%= @part.full_part_number %></label>
-      <% if @user.can_edit? %>
-	    <label>Part Name</label>
+    </div>
+  </div>
+<% if @user.can_edit? %>
+  <div class="row">
+    <div class="col">
+	    <label class="float-right">Part Name</label>
+    </div>
+    <div class="col">
 	    <input type="text" name="name" value="<%= @part.name %>" />
-      <% end %>
-	    <label>Status</label>
-	    <select name="status">
-	      <% Part::STATUS_MAP.each_pair do |key, value| %>
-		<option value="<%= key %>"<% if @part.status == key %> selected<% end %>>
-		  <%= value %>
-		</option>
-	      <% end %>
-	    </select>
-      <% if @user.can_edit? %>
-	    <label>Manufacturing Method</label>
-	    <select name="mfg_method">
+    </div>
+    <div class="col">
+      <label class="float-right">Manufacturing Method</label>
+    </div>
+    <div class="col">
+      <select name="mfg_method">
 	      <% Part::MFG_MAP.each_pair do |key, value| %>
-		<option value="<%= key %>"<% if @part.mfg_method == key %> selected<% end %>>
-		  <%= value %>
-		</option>
+		      <option value="<%= key %>"<% if @part.mfg_method == key %> selected<% end %>>
+		          <%= value %>
+		      </option>
 	      <% end %>
 	    </select>
-      <% end %>
-	    <label>Notes</label>
-	     <textarea name="notes" rows="4"><%= @part.notes %></textarea>
-      <% if @user.can_edit? %>
-        <label>Quantity Required</label>
-        <input type="text" name="quantity" value="<%= @part.quantity %>" />
-        <label>Reset Current Revision</label>
-        <select name="rev">
-          <% (@part.rev_history.split(",")).each do |rev_letter| %>
-            <option value="<%= rev_letter %>"<%if @part.rev == rev_letter %> selected<% end %>>
-          <%= rev_letter %>
-          </option>
-          <% end %>
-        </select>
-        <label>Finish Type</label>
-        <select name="finish">
-          <% Part::FINISH_MAP.each_pair do |key, value| %>
-      <option value="<%= key %>"<% if @part.finish == key %> selected<% end %>>
-        <%= value %>
-      </option>
-          <% end %>
-        </select>
-      <% end %>
-	    <label>Priority</label>
-	    <select name="priority">
-	      <% Part::PRIORITY_MAP.each_pair do |key, value| %>
-		<option value="<%= key %>"<% if @part.priority == key %> selected<% end %>>
-		  <%= value %>
-		</option>
-	      <% end %>
-	    </select>
-	  </div>
-  <% if @user.can_edit? %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label class="float-right">Quantity</label>
+    </div>
+    <div class="col">
+      <input type="text" name="quantity" value="<%= @part.quantity %>" />
+    </div>
+    <div class="col">
+      <label class="float-right">Reset Current Revision</label>
+    </div>
+    <div class="col">
+      <select name="rev">
+        <% (@part.rev_history.split(",")).each do |rev_letter| %>
+        <option value="<%= rev_letter %>"<%if @part.rev == rev_letter %> selected<% end %>>
+        <%= rev_letter %>
+        </option>
+        <% end %>
+      </select>
+    </div>
+  </div>
+  <hr>
+<% end %>
+  <div class="row">
+    <div class="col-4">
+      <div class="row">
+        <div class="col-4">
+    	    <label class="float-right">Status</label>
+        </div>
+        <div class="col-8">
+    	    <select name="status">
+    	      <% Part::STATUS_MAP.each_pair do |key, value| %>
+    		    <option value="<%= key %>"<% if @part.status == key %> selected<% end %>>
+    		      <%= value %>
+    		    </option>
+    	      <% end %>
+    	    </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <label class="float-right">Priority</label>
+        </div>
+        <div class="col-8">
+          <select name="priority">
+            <% Part::PRIORITY_MAP.each_pair do |key, value| %>
+            <option value="<%= key %>"<% if @part.priority == key %> selected<% end %>>
+              <%= value %>
+            </option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-1">
+      <label class="float-right">Notes</label>
+    </div>
+    <div class="col">
+      <textarea style="width: 100%;" name="notes" rows="4"><%= @part.notes %></textarea>
+    </div>
+  </div>
+
+<% if @user.can_edit? %>
+  <hr>
 	<fieldset>
-	  <div class="span6">
-	    <label>Attach Drawing</label>
-	    <input type="file" name="drawing" accept=".pdf"/>
-	    <label>Attach Documentation</label>
-	    <input type="file" name="documentation" accept=".pdf"/>
-	    <label>Attach Toolpath</label>
-	    <input type="file" name="toolpath" accept=".gcode"/>
-	  </div>
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <i class="mx-auto fas fa-ruler-combined fa-4x"></i>
+        </div>
+        <div class="row mt-4">
+          <label class="mx-auto btn btn-primary">
+            Attach Drawing <input type="file" style="display: none;" name="drawing" accept=".pdf">
+          </label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row">
+          <i class="mx-auto far fa-file-alt fa-4x"></i>
+        </div>
+        <div class="row mt-4">
+          <label class="mx-auto btn btn-primary">
+            Attach Documentation <input type="file" style="display: none;" name="documentation" accept=".pdf">
+          </label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row">
+          <i class="mx-auto far fa-file-code fa-4x"></i>
+        </div>
+        <div class="row mt-4">
+          <label class="mx-auto btn btn-primary">
+            Attach Machine File <input type="file" style="display: none;" name="toolpath" accept=".gcode, .stl, .dxf">
+          </label>
+        </div>
+      </div>
+    </div>
 	</fieldset>
-  <% end %>
-	</div><br>
-	<label><input type="submit" class="btn btn-primary btn-medium" value="Save Part" onclick="return verifyFileTypes(this.parentElement.parentElement);"/></label>
-  </form>
+<% end %>
+  <div class="row mt-5">
+    <div class="col-12">
+      <button type="submit" class="btn btn-success btn-lg btn-block" onclick="return verifyFileTypes(this.parentElement.parentElement);">Save Part</button>
+    </div>
+  </div>
 </div>
 
 <%= erb :footer %>

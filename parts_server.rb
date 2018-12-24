@@ -21,19 +21,19 @@ module CheesyParts
     # set :static, false
     def self.run!
     	super do |server|
-    	   server.ssl=true
-               server.ssl_options = {
+    	  server.ssl=true
+        server.ssl_options = {
                  :cert_chain_file  => File.dirname(__FILE__) + "/fullchain.pem",
                  :private_key_file => File.dirname(__FILE__) + "/privkey.pem",
                  :verify_peer      => false
-               }
-            end
-        end
-        use Rack::Session::Cookie, :key => "rack.session", :expire_after => 3600
-        before do
-          # Enforce authentication for all routes except login and user registration.
-          @user = User[session[:user_id]]
-          authenticate! unless ["/login", "/register"].include?(request.path)
+        }
+      end
+    end
+    use Rack::Session::Cookie, :key => "rack.session", :expire_after => 3600
+    before do
+      # Enforce authentication for all routes except login and user registration.
+      @user = User[session[:user_id]]
+      authenticate! unless ["/login", "/register"].include?(request.path)
 
 	  if CheesyCommon::Config.slack_enabled
 		  # Initialize slack bot
@@ -149,6 +149,7 @@ module CheesyParts
       halt(400, "Missing part number prefix.") if params[:part_number_prefix].nil?
 
       project = Project.create(:name => params[:name], :part_number_prefix => params[:part_number_prefix], :hide_dashboards => 0)
+
       redirect "/projects/#{project.id}"
     end
 
@@ -179,13 +180,24 @@ module CheesyParts
       if params[:part_number_prefix]
         @project.part_number_prefix = params[:part_number_prefix]
       end
+
+      if params[:avatar]
+        file = params[:avatar][:tempfile]
+        Dir.mkdir("./uploads/projects/#{@project.id}") unless Dir.exist?("./uploads/projects/#{@project.id}")
+        File.delete("./uploads/projects/#{@project.id}/avatar.png") if File.exist?("./uploads/projects/#{@project.id}/avatar.png")
+        File.open("./uploads/projects/#{@project.id}/avatar.png", 'wb') do |f|
+          f.write(file.read)
+        end
+      end
+
+
       @project.save
       redirect "/projects/#{params[:id]}"
     end
 
     get "/projects/:id/delete" do
       require_permission(@user.can_administer?)
-
+      File.delete("./uploads/projects/#{@project.id}/avatar.png") if File.exist?("./uploads/projects/#{@project.id}/avatar.png")
       erb :project_delete
     end
 
@@ -540,11 +552,11 @@ module CheesyParts
       @user_edit.save
       redirect "/users"
     end
-    get "/user/prefrences" do
+    get "/user/preferences" do
       erb :user_prefs
     end
 
-    post "/user/prefrences" do
+    post "/user/preferences" do
       halt(400, "Invalid user.") if @user.nil?
       @user.email = params[:email] if params[:email]
       @user.first_name = params[:first_name] if params[:first_name]
@@ -552,7 +564,7 @@ module CheesyParts
       @user.set_password(params[:password]) if params[:password] && !params[:password].empty?
       @user.theme = params[:theme] if params[:theme]
       @user.save
-      redirect "/user/prefrences"
+      redirect "/user/preferences"
     end
 
     get "/users/:id/delete" do
@@ -670,7 +682,7 @@ module CheesyParts
         order = Order.where(:project_id => @project.id, :vendor_name => params[:vendor],
                             :status => "open").first
         if order.nil?
-          order = Order.create(:project => @project, :vendor_name => params[:vendor], :status => "open")
+          order = Order.create(:project => @project, :vendor_name => params[:vendor], :status => "open", :reimbursed => 0)
         end
         order_id = order.id
       end

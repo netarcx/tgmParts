@@ -1,8 +1,9 @@
 <%= erb :header %>
 
-<div class="container">
+<div class="container nav-sep">
   <h2>Edit Preferences</h2>
-  <form action="" method="POST">
+  <hr>
+  <form class="form-signin" action="" method="POST">
     <label>E-mail</label>
     <input type="text" name="email" value="<%= @user.email %>"/>
     <label>First Name</label>
@@ -13,6 +14,7 @@
     <input type="password" name="password" />
     <label>Verify Password</label>
     <input type="password" name="password2" />
+    <br>
     <label>Theme</label>
     <select name="theme">
       <% User::THEMES.each_pair do |key, value| %>
@@ -20,7 +22,7 @@
       <% end %>
     </select>
     <label>
-      <input type="submit" class="btn btn-primary btn-medium" value="Save"
+      <input type="submit" class="btn btn-primary mt-2" value="Save"
           onclick="return verifyPasswordMatch(this.parentElement.parentElement);" />
     </label>
   </form>

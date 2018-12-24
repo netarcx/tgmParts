@@ -1,23 +1,49 @@
 <%= erb :header %>
 
-<div class="container">
+<div class="container nav-sep">
   <div class="row">
-    <div class="span2">
+    <div class="col">
       <h2>Projects</h2>
     </div>
-    <% if @user.can_administer? %>
-      <div class="pull-right" style="margin-top: 20px;">
-        <a href="/new_project" class="btn btn-success btn-small">
-          <i class="icon-white icon-file"></i> New Project
+    <div class="col">
+      <% if @user.can_administer? %>
+        <a href="/new_project" class="btn btn-success float-right">
+          New Project
         </a>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
-  <div class="well">
+  <hr>
+
+  <% i = 0 %>
+  <div class="row justify-content-center" style="margin-top: 1em;">
   <% Project.each do |project| %>
-    <li><h4><a href="/projects/<%= project.id %>"><%= project.name %></a></h4></li>
+    <div class="col-4">
+      <a href="/projects/<%= project.id %>">
+        <div class="row">
+          <div class="col" align="center">
+            <%if File.exist?("./uploads/projects/#{project.id}/avatar.png") %>
+              <img class="rounded" style="width:250px;height:250px;" src="./uploads/projects/<%= project.id %>/avatar.png">
+            <%else %>
+              <img class="rounded" src="/img/placeholder.png">
+            <%end %>
+          </div>
+        </div>
+        <div class="row" style="margin-top: .5em;">
+          <div class="col mx-auto" style="width: auto;">
+            <h4 class="text-center"><%= project.name %></h4>
+          </div>
+        </div>
+      </a>
+    </div>
+    <% i += 1 %>
+    <% if (i % 3 == 0) %>
+  </div>
+  <div class="row" style="margin-top: 1em;">
+    <% end %>
   <% end %>
   </div>
 </div>
+
 
 <%= erb :footer %>

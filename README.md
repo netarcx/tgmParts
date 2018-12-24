@@ -1,6 +1,8 @@
 Deep Blue Parts
 ===========
 
+### This is a development branch and is not yet bug-free. We plan to have this branch merged and functional for Build Season 2019.
+
 Deep Blue Parts is a web-based system for tracking parts through the design and manufacture cycle. It assigns
 part numbers with which CAD files can be saved to version control and stores information about parts'
 current manufacturing status.
