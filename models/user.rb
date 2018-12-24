@@ -13,11 +13,14 @@ class User < Sequel::Model
   SALT_BYTES = 24
   PERMISSION_MAP = { "readonly" => "Read-only", "shoptech" => "Shop Tech", "editor" => "Editor", "admin" => "Administrator" }
   THEMES = {"classic" => "Classic"}
+
+  rootdir = Dir.pwd
   Dir.chdir("public/themes/")
   THEMES_DIR = Dir["*.css"]
   THEMES_DIR.each { |x| THEMES[x.chomp(".css")]=x.chomp(".css")}
 
   print THEMES
+  Dir.chdir(rootdir)
   # Checks the given credentials against the database. Returns the user object on success and nil otherwise.
   def self.authenticate(email, password)
     user = User[:email => email]
