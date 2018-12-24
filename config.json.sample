@@ -1,4 +1,4 @@
-
+{
   "global": {
     "db_host": "localhost",
     "db_user": "parts_admin",
