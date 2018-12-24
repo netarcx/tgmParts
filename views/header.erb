@@ -4,10 +4,8 @@
   <meta charset="utf-8">
   <title>Deep Blue Parts</title>
   <link rel="shortcut icon" href="/img/favicon.png">
-  <% if @user && @user.theme?("slate") %>
-    <link href="/css/slate/bootstrap.min.css" rel="stylesheet">
-  <% elsif @user && @user.theme?("cyborg") %>
-    <link href="/css/cyborg/bootstrap.min.css" rel="stylesheet">
+  <% if @user and @user.theme != "classic" %>
+    <link href="/themes/<%= @user.theme %>.css" rel="stylesheet">
   <% else %>
   <link href="/bootstrap-4/css/bootstrap.css" rel="stylesheet">
   <% end %>
