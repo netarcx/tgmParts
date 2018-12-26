@@ -1,45 +1,102 @@
 <%= erb :header %>
 
-<div class="container">
+<div class="container nav-sep">
   <h2>
     <%= @order.vendor_name %>
     <%= @order.ordered_at.strftime("%F") rescue "" %>
   </h2>
   <%= erb :order_items_list, :locals => { :order_items => @order.order_items, :order => nil } %>
   <form action="/projects/<%= @project.id %>/orders/<%= @order.id %>/edit" method="POST">
-    <label>Status</label>
-    <select name="status" <% unless @user.can_edit? %>disabled <% end %>>
-      <% Order::STATUS_MAP.each_pair do |key, value| %>
-        <option value="<%= key %>"<% if @order.status == key %> selected<% end %>>
-          <%= value %>
-        </option>
-      <% end %>
-    </select>
-    <label>Subtotal</label>
-    <input type="text" disabled value="<%= "$%.2f" % @order.subtotal %>" />
-    <label>Tax</label>
-    <input type="text" <% unless @user.can_edit? %>disabled <% end %>name="tax_cost"
-        value="<%= "$%.2f" % @order.tax_cost.to_f %>" />
-    <label>Shipping</label>
-    <input type="text" <% unless @user.can_edit? %>disabled <% end %>name="shipping_cost"
-        value="<%= "$%.2f" % @order.shipping_cost.to_f %>" />
-    <label>Total</label>
-    <input type="text" disabled value="<%= "$%.2f" % @order.total_cost %>" />
-    <label>Paid for by</label>
-    <input type="text" <% unless @user.can_edit? %>disabled <% end %>name="paid_for_by"
-        value="<%= @order.paid_for_by %>" />
-    <label>
-      Reimbursed?
-      <input type="checkbox" <% unless @user.can_edit? %>disabled <% end %>name="reimbursed"
-          <% if @order.reimbursed == 1 %>checked<% end %>/>
-    </label>
-    <label>Date ordered</label>
-    <input type="text" <% unless @user.can_edit? %>disabled <% end %>class="datepicker"
-        data-date-format="yyyy-mm-dd" name="ordered_at"
-        value="<%= @order.ordered_at.strftime("%F") rescue "" %>"/>
-    <label>Notes</label>
-      <textarea name="notes" <% unless @user.can_edit? %>disabled <% end %>
-          rows="3"><%= @order.notes %></textarea>
+    <div class="row">
+      <div class="col-5">
+        <div class="row">
+          <div class="col-4">
+            Status
+          </div>
+          <div class="col-8">
+            <select name="status" <% unless @user.can_edit? %>disabled <% end %>>
+              <% Order::STATUS_MAP.each_pair do |key, value| %>
+                <option value="<%= key %>"<% if @order.status == key %> selected<% end %>>
+                  <%= value %>
+                </option>
+              <% end %>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-4">
+            Date Ordered
+          </div>
+          <div class="col-8">
+            <input type="text" <% unless @user.can_edit? %>disabled <% end %>class="datepicker"
+                data-date-format="yyyy-mm-dd" name="ordered_at"
+                value="<%= @order.ordered_at.strftime("%F") rescue "" %>"/>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-4">
+            Paid for by
+          </div>
+          <div class="col-8">
+            <input type="text" <% unless @user.can_edit? %>disabled <% end %>name="paid_for_by"
+                value="<%= @order.paid_for_by %>" />
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-4">
+            Reimbursed?
+          </div>
+          <div class="col-8">
+            <input type="checkbox" <% unless @user.can_edit? %>disabled <% end %>name="reimbursed"
+                <% if @order.reimbursed == 1 %>checked<% end %>/>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        Notes<br>
+          <textarea name="notes" <% unless @user.can_edit? %>disabled <% end %>
+              rows="3"><%= @order.notes %></textarea>
+      </div>
+
+      <div class="col-3">
+        <div class="row">
+          <div class="col-4">
+            Subtotal
+          </div>
+          <div class="col-8">
+            <input type="text" disabled value="<%= "$%.2f" % @order.subtotal %>" />
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-4">
+            Tax
+          </div>
+          <div class="col-8">
+            <input type="text" <% unless @user.can_edit? %>disabled <% end %>name="tax_cost"
+                value="<%= "$%.2f" % @order.tax_cost.to_f %>" />
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-4">
+            Shipping
+          </div>
+          <div class="col-8">
+            <input type="text" <% unless @user.can_edit? %>disabled <% end %>name="shipping_cost"
+                value="<%= "$%.2f" % @order.shipping_cost.to_f %>" />
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-4">
+            Total
+          </div>
+          <div class="col-8">
+            <input type="text" disabled value="<%= "$%.2f" % @order.total_cost %>" />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <% if @user.can_edit? %>
       <br />
       <input type="submit" class="btn btn-primary btn-medium" value="Save" />

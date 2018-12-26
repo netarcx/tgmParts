@@ -1,16 +1,26 @@
 <%= erb :header %>
 
-<div class="container">
+<div class="container nav-sep">
+  <div class="row">
+    <div class="col">
+      <h3><b><%= @project.name %> - Open Orders</b></h3>
+    </div>
+    <div class="col">
+      <div class="float-right">
+        <% unless @show_new_item_form %>
+          <a href="?new_item=true" class="btn btn-success btn-small">New Item</a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+
+  <hr>
+
   <% if @user.can_edit? %>
     <% if @show_new_item_form %>
-      <h2>New item</h2>
+      <h4>New Item</h4>
       <%= erb :new_order_item %>
-    <% else %>
-      <div class="pull-right" style="margin-top: 15px;">
-        <a href="?new_item=true" class="btn btn-success btn-small">
-          <i class="icon-white icon-user"></i> New Item
-        </a>
-      </div>
     <% end %>
   <% end %>
   <% unless @no_vendor_order_items.empty? %>
@@ -18,12 +28,21 @@
     <%= erb :order_items_list, :locals => { :order_items => @no_vendor_order_items, :order => nil } %>
   <% end %>
   <% @vendor_orders.each do |order| %>
-    <a href="/projects/<%= @project.id %>/orders/<%= order.id %>" style="color: black;"><h2>
-      <%= order.vendor_name %>
-      <%= order.ordered_at.strftime("%F") rescue "" %>
-      <span class="label label-status-<%= order.status %>"><%= Order::STATUS_MAP[order.status] %></span>
-    </h2></a>
+    <div class="card mt-3 p-2 shadow">
+    <a href="/projects/<%= @project.id %>/orders/<%= order.id %>" style="color: black;">
+    <div class="row mb-1">
+      <div class="col-4"><h2>
+        <%= order.vendor_name %>
+        <%= order.ordered_at.strftime("%F") rescue "" %></h2>
+      </div>
+      <div class="col-2 offset-6">
+        <h4><span class="float-right label label-status-<%= order.status %>"><%= Order::STATUS_MAP[order.status] %></span></h4>
+      </div>
+    </div>
+    </a>
+
     <%= erb :order_items_list, :locals => { :order_items => order.order_items, :order => order } %>
+    </div>
   <% end %>
 </div>
 

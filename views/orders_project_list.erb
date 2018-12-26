@@ -15,7 +15,7 @@
   <% Project.reject { |project| project.hide_dashboards == 1 }.each do |project| %>
     <div class="col-4">
 
-        <div class="card mx-auto" style="width: 250px;">
+        <div class="card mx-auto shadow" style="width: 250px;">
           <%if File.exist?("./uploads/projects/#{project.id}/avatar.png") %>
             <img class="rounded card-img-top" style="width:250px;height:250px;" src="./uploads/projects/<%= project.id %>/avatar.png">
           <%else %>

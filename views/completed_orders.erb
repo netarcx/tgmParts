@@ -1,13 +1,29 @@
 <%= erb :header %>
 
-<div class="container">
+<div class="container nav-sep">
+  <div class="row">
+    <div class="col">
+      <h3><b><%= @project.name %> - Orders</b></h3>
+    </div>
+  </div>
   <% @vendor_orders.each do |order| %>
-    <a href="/projects/<%= @project.id %>/orders/<%= order.id %>" style="color: black;"><h2>
-      <%= order.vendor_name %>
-      <%= order.ordered_at.strftime("%F") rescue "" %>
-      <span class="label label-status-<%= order.status %>"><%= Order::STATUS_MAP[order.status] %></span>
-    </h2></a>
+  <div class="card mt-3 p-4 shadow">
+    <a href="/projects/<%= @project.id %>/orders/<%= order.id %>" style="color: black;">
+    <div class="row mb-2">
+      <div class="col-4">
+        <h2>
+          <%= order.vendor_name %>
+          <%= order.ordered_at.strftime("%F") rescue "" %>
+        </h2>
+      </div>
+      <div class="col-2 offset-6">
+        <h4><span class="float-right label label-status-<%= order.status %>"><%= Order::STATUS_MAP[order.status] %></span></h4>
+      </div>
+    </div>
+    </a>
+
     <%= erb :order_items_list, :locals => { :order_items => order.order_items, :order => order } %>
+  </div>
   <% end %>
 </div>
 
