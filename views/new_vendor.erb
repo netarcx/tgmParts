@@ -1,0 +1,30 @@
+<%= erb :header %>
+
+<div class="container nav-sep">
+  <h2>Create New Vendor</h2><hr>
+  <form action="/vendors" method="POST">
+    <div class="row">
+      <div class="col-2">
+        <label class="float-right">Name</label>
+      </div>
+      <div class="col-4">
+        <input type="text" name="name" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <label class="float-right">Part Prefix</label>
+      </div>
+      <div class="col-4">
+        <input type="text" name="part_number_prefix" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4 offset-2">
+        <label class="float-right mt-1">
+          <input type="submit" class="btn btn-success btn-medium" value="Create Vendor">
+        </label>
+  </form>
+</div>
+
+<%= erb :footer %>
