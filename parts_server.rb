@@ -583,7 +583,38 @@ module CheesyParts
       @user_delete.delete
       redirect "/users"
     end
+    get "/vendors" do
+      require_permission(@user.is_shoptech?)
+      erb :vendors
+    end
+    before "/vendors/:id*" do
+      @vendor = Vendor[params[:id]]
+      halt(400, "Invalid project.") if @vendor.nil?
+    end
 
+    get "/vendors/:id" do
+      if ["type", "name", "parent_part_id", "status"].include?(params[:sort])
+        @part_sort = params[:sort].to_sym
+      else
+        @part_sort = :id
+      end
+      erb :vendor
+    end
+    get "/new_vendor" do
+      require_permission(@user.is_shoptech?)
+      erb :new_vendor
+    end
+    post "/vendors" do
+      require_permission(@user.is_shoptech?)
+
+      # Check parameter existence and format.
+      halt(400, "Missing vendor name.") if params[:name].nil?
+      halt(400, "Missing part number prefix.") if params[:part_number_prefix].nil?
+
+      vendor = Vendor.create(:name => params[:name], :part_number_prefix => params[:part_number_prefix])
+
+      redirect "/vendors/#{vendor.id}"
+    end
     get "/register" do
       @admin_new_user = false
       erb :new_user

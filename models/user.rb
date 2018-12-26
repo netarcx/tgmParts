@@ -17,7 +17,6 @@ class User < Sequel::Model
   THEMES_DIR = Dir["*.css"]
   THEMES_DIR.each { |x| THEMES[x.chomp(".css")]=x.chomp(".css")}
 
-  print THEMES
   # Checks the given credentials against the database. Returns the user object on success and nil otherwise.
   def self.authenticate(email, password)
     user = User[:email => email]

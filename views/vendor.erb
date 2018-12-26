@@ -1,0 +1,40 @@
+<%= erb :header %>
+
+<div class="container nav-sep">
+
+  <div class="row">
+    <div class="col">
+      <h3><b><%= @vendor.name %> - Vendor COTS Parts</b></h3>
+    </div>
+    <div class="col">
+      <% if @user.can_edit? %>
+        <div class="float-right">
+          <a href="/vendors/<%= @vendor.id %>/new_part?type=cots" class="btn btn-success btn-small">
+            <i class="icon-white icon-cog"></i> New COTS Part
+          </a>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <hr>
+
+  <%= erb :parts_list, :locals => { :parts => Part.where(:vendor_id => @vendor.id).order(@part_sort) } %>
+  <hr>
+
+  <div class="row">
+    <div class="col-3">
+        <span class="label label-info">Vendor Prefix: </span><b class="ml-1"><%= @vendor.part_number_prefix %></b>
+    </div>
+    <div class="col-9">
+      <% if @user.is_shoptech? %>
+        <div class="float-right">
+          <a href="/vendors/<%= @vendor.id %>/edit" class="btn btn-primary btn-small">Edit This Vendor</a>
+          <a href="/vendors/<%= @vendor.id %>/delete" class="btn btn-danger btn-small">Delete This Vendor</a>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<br />
+
+<%= erb :footer %>
