@@ -9,7 +9,7 @@
     <div class="col">
       <% if @user.can_edit? %>
         <div class="float-right">
-          <a href="/vendors/<%= @vendor.id %>/new_part?type=cots" class="btn btn-success btn-small">
+          <a href="/vendors/<%= @vendor.id %>/new_part" class="btn btn-success btn-small">
             <i class="icon-white icon-cog"></i> New COTS Part
           </a>
         </div>
@@ -18,7 +18,7 @@
   </div>
   <hr>
 
-  <%= erb :parts_list, :locals => { :parts => Part.where(:vendor_id => @vendor.id).order(@part_sort) } %>
+  <%= erb :vendor_parts_list, :locals => { :parts => VendorPart.where(:vendor_id => @vendor.id).order(@part_sort) } %>
   <hr>
 
   <div class="row">

@@ -1,0 +1,69 @@
+<%= erb :header %>
+
+<div class="container nav-sep">
+  <h2>Create New Vendor Part</h2>
+
+  <form action="/vendor_parts" method="POST">
+    <input type=hidden name=type value="vendor_part" />
+    <div class="row">
+      <div class="col-2">
+        <label class="float-right">Vendor</label>
+      </div>
+      <div class="col-4">
+        <input type="text" disabled value="<%= @vendor.name %>">
+        <input type="hidden" name="vendor_id" value="<%= @vendor.id %>">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <label class="float-right">Vendor Part Name</label>
+      </div>
+      <div class="col-4">
+        <input type="text" name="name" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <label class="float-right">Vendor Part Number</label>
+      </div>
+      <div class="col-4">
+        <input type="text" name="part_number" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <label class="float-right">Unit Cost</label>
+      </div>
+      <div class="col-4">
+        <input type="text" name="unit_cost" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <label class="float-right">Quantity per Unit</label>
+      </div>
+      <div class="col-4">
+        <input type="text" name="qty_per_unit" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <label class="float-right">Vendor Link</label>
+      </div>
+      <div class="col-4">
+        <input type="text" name="link" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4 offset-2">
+        <label class="float-right mt-1">
+          <input type="submit" class="btn btn-success btn-medium" value="Create Vendor Part">
+        </label>
+      </div>
+    </div>
+  </form>
+</div>
+
+<%= erb :footer %>

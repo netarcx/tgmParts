@@ -157,6 +157,10 @@ module CheesyParts
       @project = Project[params[:id]]
       halt(400, "Invalid project.") if @project.nil?
     end
+    before "/vendors/:id*" do
+      @vendor = Vendor[params[:id]]
+      halt(400, "Invalid Vendor.") if @vendor.nil?
+    end
 
     get "/projects/:id" do
       if ["type", "name", "parent_part_id", "status"].include?(params[:sort])
@@ -172,7 +176,32 @@ module CheesyParts
 
       erb :project_edit
     end
+    get "/vendors/:id/edit" do
+      require_permission(@user.is_shoptech?)
 
+      erb :vendor_edit
+    end
+    post "/vendors/:id/edit" do
+      require_permission(@user.is_shoptech?)
+
+      @vendor.name = params[:name] if params[:name]
+      if params[:part_number_prefix]
+        @vendor.part_number_prefix = params[:part_number_prefix]
+      end
+
+      if params[:avatar]
+        file = params[:avatar][:tempfile]
+        Dir.mkdir("./uploads/vendors/#{@vendor.id}") unless Dir.exist?("./uploads/vendors/#{@vendor.id}")
+        File.delete("./uploads/vendors/#{@vendor.id}/avatar.png") if File.exist?("./uploads/vendors/#{@vendor.id}/avatar.png")
+        File.open("./uploads/vendors/#{@vendor.id}/avatar.png", 'wb') do |f|
+          f.write(file.read)
+        end
+      end
+
+
+      @vendor.save
+      redirect "/vendors/#{params[:id]}"
+    end
     post "/projects/:id/edit" do
       require_permission(@user.can_administer?)
 
@@ -200,7 +229,17 @@ module CheesyParts
       File.delete("./uploads/projects/#{@project.id}/avatar.png") if File.exist?("./uploads/projects/#{@project.id}/avatar.png")
       erb :project_delete
     end
+    get "/vendors/:id/delete" do
+      require_permission(@user.can_administer?)
+      File.delete("./uploads/vendors/#{@vendor.id}/avatar.png") if File.exist?("./uploads/vendor/#{@vendor.id}/avatar.png")
+      erb :vendor_delete
+    end
+    post "/vendors/:id/delete" do
+      require_permission(@user.can_administer?)
 
+      @vendor.delete
+      redirect "/vendors"
+    end
     post "/projects/:id/delete" do
       require_permission(@user.can_administer?)
 
@@ -211,7 +250,13 @@ module CheesyParts
     get "/projects/:id/dashboard" do
       erb :dashboard
     end
-
+    get "/vendors/:id/new_part" do
+      require_permission(@user.is_shoptech?)
+      erb :new_vendor_part
+    end
+    get "/vendors/:id/parts" do
+      erb :vendor_parts
+    end
     get "/projects/:id/dashboard/parts" do
       if Part::STATUS_MAP.has_key?(params[:status]) || params[:status]=="drawing"
         @status = params[:status]
@@ -224,6 +269,11 @@ module CheesyParts
 
       @parent_part_id = params[:parent_part_id]
       @type = params[:type] || "part"
+      if @type == "cots"
+        @vendor = Vendor[1]
+        # halt(400, @vendor)
+        halt(400, "Invalid Vendor.") if @vendor.nil?
+      end
       halt(400, "Invalid part type.") unless Part::PART_TYPES.include?(@type)
       erb :new_part
     end
@@ -231,7 +281,36 @@ module CheesyParts
     get "/dashboards" do
       erb :dashboards
     end
+    post "/vendor_parts" do
+      require_permission(@user.is_shoptech?)
 
+      # Check parameter existence and format.
+      halt(400, "Missing vendor ID.") if params[:vendor_id].nil? || params[:vendor_id] !~ /^\d+$/
+      halt(400, "Missing part name.") if params[:name].nil? || params[:name].empty?
+      halt(400, "Missing part number.") if params[:part_number].nil? || params[:part_number] !~ /^\d+$/
+      halt(400, "Missing unit cost.") if params[:unit_cost].nil? || params[:unit_cost] !~ /^\d+$/
+      halt(400, "Missing qty_per_unit.") if params[:qty_per_unit].nil? || params[:qty_per_unit] !~ /^\d+$/
+      halt(400, "Missing part link.") if params[:link].nil? || params[:link].empty?
+
+
+      vendor = Vendor[params[:vendor_id].to_i]
+      halt(400, "Invalid vendor.") if vendor.nil?
+
+
+      part = VendorPart.new(:name => params[:name].gsub("\"", "&quot;"), :link=> params[:link].gsub("\"", "&quot;"), :vendor_id => params[:vendor_id], :unit_cost => params[:unit_cost], :qty_per_unit => params[:qty_per_unit], :part_number => params[:part_number] )
+      part.save
+      redirect "/vendor_parts/#{part.id}"
+    end
+    get "/vendor_parts/:id" do
+      @part = VendorPart[params[:id]]
+      halt(400, "Invalid Vendor part.") if @part.nil?
+      if ["name", "vendor_id", "link"].include?(params[:sort])
+        @part_sort = params[:sort].to_sym
+      else
+        @part_sort = :id
+      end
+      erb :vendor_part
+    end
     post "/parts" do
       require_permission(@user.can_edit?)
 
@@ -248,7 +327,7 @@ module CheesyParts
       halt(400, "Invalid project.") if project.nil?
 
       parent_part = nil
-      if params[:parent_part_id]
+      if params[:parent_part_id] and params[:type] != "cots"
         parent_part = Part[:id => params[:parent_part_id].to_i, :project_id => project.id,
                            :type => "assembly"]
         halt(400, "Invalid parent part.") if parent_part.nil?
@@ -363,7 +442,30 @@ module CheesyParts
       @part.save
       redirect params[:referrer] || "/parts/#{params[:id]}"
     end
+    get "/vendor_parts/:id/edit" do
+      require_permission(@user.is_shoptech?)
 
+      @part = VendorPart[params[:id]]
+      halt(400, "Invalid part.") if @part.nil?
+      @referrer = request.referrer
+      erb :vendor_part_edit
+    end
+
+    post "/vendor_parts/:id/edit" do
+      require_permission(@user.is_shoptech?)
+
+      @part = VendorPart[params[:id]]
+      halt(400, "Invalid part.") if @part.nil?
+      halt(400, "Missing part name.") if params[:name] && params[:name].empty?
+      @part.qty_per_unit = params[:qty_per_unit] if params[:qty_per_unit]
+      @part.unit_cost = params[:unit_cost] if params[:unit_cost]
+      @part.name = params[:name] if params[:name]
+      @part.part_number = params[:part_number] if params[:part_number]
+      @part.link = params[:link] if params[:ulink]
+
+      @part.save
+      redirect params[:referrer] || "/vendor_parts/#{params[:id]}"
+    end
     get "/parts/:id/release" do
       require_permission(@user.can_edit?)
 
@@ -470,6 +572,25 @@ module CheesyParts
       halt(400, "Invalid part.") if @part.nil?
       @referrer = request.referrer
       erb :part_delete
+    end
+
+    post "/vendor_parts/:id/delete" do
+      require_permission(@user.is_shoptech?)
+
+      @part = VendorPart[params[:id]]
+      vendor_id = @part.vendor_id
+      halt(400, "Invalid part.") if @part.nil?
+      @part.delete
+      params[:referrer] = nil if params[:referrer] =~ /\/vendor_parts\/#{params[:id]}$/
+      redirect params[:referrer] || "/vendors/#{vendor_id}"
+    end
+    get "/vendor_parts/:id/delete" do
+      require_permission(@user.is_shoptech?)
+
+      @part = VendorPart[params[:id]]
+      halt(400, "Invalid part.") if @part.nil?
+      @referrer = request.referrer
+      erb :vendor_part_delete
     end
 
     post "/parts/:id/delete" do

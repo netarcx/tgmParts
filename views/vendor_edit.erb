@@ -1,0 +1,45 @@
+<%= erb :header %>
+
+<div class="container nav-sep">
+  <h2>Edit Vendor <% @vendor.name %></h2>
+  <hr>
+
+  <form action="" method="POST" enctype="multipart/form-data">
+    <div class="row">
+      <div class="col-2">
+        <label class="float-right">Name</label>
+      </div>
+      <div class="col-4">
+        <input type="text" name="name" value="<%= @vendor.name %>" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <label class="float-right">Part Prefix</label>
+      </div>
+      <div class="col-4">
+        <input type="text" name="part_number_prefix" value="<%= @vendor.part_number_prefix %>" />
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <p>Images should be a square aspect ratio.</p>
+    </div>
+    <div class="row justify-content-md-center mt-1">
+      <div class="col-4">
+        <div class="float-right">
+          <label class="mx-auto btn btn-primary btn-medium">
+            Upload vendor logo <input type="file" style="display: none;" name="avatar" accept=".png">
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <label class="mx-auto btn btn-primary btn-medium">
+          Save <input type="submit" style="display: none;" >
+        </label>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<%= erb :footer %>

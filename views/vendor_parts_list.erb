@@ -1,0 +1,32 @@
+<table class="table table-bordered table-hover table-sm">
+  <thead class="thead-light">
+    <tr>
+      <th><a href="?sort=id">Part Number</a></th>
+      <th><a href="?sort=name">Name</a></th>
+      <th><a href="?sort=unit_cost">Unit Cost</a></th>
+      <th><a href="?sort=qty_per_unit">Quantity Per Unit</a></th>
+      <% if @user.can_edit? %>
+        <th>Action</th>
+      <% end %>
+    </tr>
+  </thead>
+  <% parts.each do |part| %>
+    <tr>
+      <td><a href="/vendor_parts/<%= part.id %>"><%= part.full_part_number %></a></td>
+      <td><a href="/vendor_parts/<%= part.id %>"><%= part.name %></a></td>
+      <td>$<%= part.unit_cost %></td>
+      <td><%= part.qty_per_unit %></td>
+
+      <% if @user.can_edit? %>
+        <td>
+          <a href="/vendor_parts/<%= part.id %>/edit" class="btn btn-primary btn-sm">
+            <i class="fas fa-edit"></i>
+          </a>
+          <a href="/vendor_parts/<%= part.id %>/delete" class="btn btn-danger btn-sm">
+            <i class="fas fa-trash"></i>
+          </a>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

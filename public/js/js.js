@@ -45,6 +45,24 @@ function verifyFileTypes(form) {
     return true;
   }
 }
+var VendorID;
+function changeVendorPartFilter(vendorID) {
+  VendorID = vendorID;
+  loadVendorParts();
+}
+function loadVendorParts() {
+  $.ajax({
+    url: "/vendors/" + VendorID + "/parts",
+    complete: function(response) {
+      $("#vendor_parts").html(response.responseText);
+      $("#vendor_parts").tooltip({
+        selector: ".vendor-part",
+        placement: "bottom"
+      });
+    }
+  });
+}
+
 // Global variables to store current filter state for auto-refresh.
 var dashboardProjectId, dashboardStatus;
 

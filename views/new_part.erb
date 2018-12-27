@@ -26,7 +26,7 @@
           <label class="float-right">Vendor</label>
         </div>
         <div class="col-4">
-          <select name="vendor_id">
+          <select name="vendor_id" onchange="changeVendorPartFilter(this.value);">
             <% Vendor.each do |vendor| %>
             <option value="<%= vendor.id %>">
               <%= vendor.part_number_prefix %> | <%= vendor.name %>
@@ -40,13 +40,8 @@
           <label class="float-right">COTS Part</label>
         </div>
         <div class="col-4">
-          <select name="vendor_id">
-            <% VendorPart.each do |cots| %>
-              <option value="<%= cots.id %>">
-                <%= Vendor[id: cots.vendor_id].part_number_prefix %>-<%=cots.part_number%> | <%= cots.name %>
-              </option>
-            <% end %>
-          </select>
+          <%= erb :vendor_parts %>
+
         </div>
       </div>
     <% else %>

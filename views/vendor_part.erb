@@ -1,0 +1,68 @@
+<%= erb :header %>
+
+<div class="container nav-sep">
+  <div class="row">
+    <div class="col">
+	     <h2>Vendor Part: <%= @part.name %></h2>
+    </div>
+
+
+    </div>
+    <hr>
+
+    <a href="/vendors/<%= @part.vendor_id %>"><b><%= @part.vendor.name %></b></a>
+
+    <i class="fas fa-chevron-right"></i> <b><%= @part.name %></b>
+
+  <br />
+
+  <div class="row mt-2">
+    <div class="col-4">
+      <table class="table table-hover table-bordered">
+        <tr>
+          <td><b>Vendor</b></td>
+          <td><a href="/vendors/<%= @part.vendor_id %>"><%= @part.vendor.name %></a></td>
+        </tr>
+        <tr>
+          <td><b>Part Number</b></td>
+          <td><%= @part.full_part_number %></td>
+        </tr>
+        <tr>
+          <td><b>Name</b></td><td><%= @part.name %></td>
+        </tr>
+        <tr>
+          <td><b>Quantity per Unit</b></td><td><%= @part.qty_per_unit %></td>
+        </tr>
+        <tr>
+          <td><b>Unit Cost</b></td><td>$<%= @part.unit_cost %></td>
+        </tr>
+        <tr>
+          <td><b>Link</b></td><td><a href=<%= @part.link %>><%= @part.link %></a></td>
+        </tr>
+
+
+
+<% if @user.is_shoptech? %>
+      <div class="row" style="margin-top: 0px;">
+        <div class="col">
+          <a href="/vendor_parts/<%= @part.id %>/edit" class="btn btn-primary btn-small">
+            <i class="icon-white icon-pencil"></i> Edit This Part
+          </a>
+        </div>
+        <div class="col">
+          <a href="/vendor_parts/<%= @part.id %>/delete" class="btn btn-danger btn-small float-right">
+            <i class="icon-white icon-trash"></i> Delete This Part
+          </a>
+        </div>
+      </div>
+<% end %>
+    </div><!-- /col-4 -->
+    <div class="col-8 float-right">
+
+  </div>
+</div>
+</div>
+
+
+
+<%= erb :footer %>
