@@ -327,7 +327,7 @@ module CheesyParts
       halt(400, "Invalid project.") if project.nil?
 
       parent_part = nil
-      if params[:parent_part_id] and params[:type] != "cots"
+      if params[:parent_part_id]
         parent_part = Part[:id => params[:parent_part_id].to_i, :project_id => project.id,
                            :type => "assembly"]
         halt(400, "Invalid parent part.") if parent_part.nil?
@@ -335,12 +335,20 @@ module CheesyParts
 
       part = Part.generate_number_and_create(project, params[:type], parent_part)
       part.name = params[:name].gsub("\"", "&quot;")
+      if params[:type] == "cots"
+        part.part_number = VendorPart[params[:part_id]].part_number
+        part.notes = params[:vendor_id] #abuse notes to use as vendor id storage.. sorry
+        part.rev = params[:part_id] #abuse part revision to use as vendorpart id storage..
+        part.quantity = params[:quantity]
+      else
+        part.rev = ""
+        part.quantity = ""
+
+      end
       part.status = "designing"
       part.mfg_method = "Manual/Hand tools"
       part.finish = "None"
-      part.rev = ""
       part.rev_history = ""
-      part.quantity = ""
       part.priority = 1
       part.trello_link = ""
       part.drawing_created = 0
@@ -373,8 +381,10 @@ module CheesyParts
 
       @part = Part[params[:id]]
       halt(400, "Invalid part.") if @part.nil?
-      halt(400, "Missing part name.") if params[:name] && params[:name].empty?
-
+      halt(400, "Missing part name.") if @part.type!="cots" && params[:name] && params[:name].empty?
+      if @part.type == "cots"
+        @part.ucode = "DEFAULT"
+      end
       if params[:status]
         halt(400, "Invalid status.") unless Part::STATUS_MAP.include?(params[:status])
         @part.status = params[:status]
@@ -405,6 +415,7 @@ module CheesyParts
             f.write(file.read)
           end
           @part.rev = @part.increment_revision(@part.rev_history.split(",").last)
+
           if @part.rev == "A"
             @part.rev_history << @part.rev
           else
@@ -439,7 +450,7 @@ module CheesyParts
         @part.notes = params[:notes] if params[:notes]
         @part.priority = params[:priority] if params[:priority]
       end
-      @part.save
+      @part.save(:columns => ["id", "part_number", "project_id", "type", "name", "parent_part_id", "notes", "status", "mfg-method", "finish", "quantity", "priority", "drawing_created", "rev", "rev_history", "trello_link"])
       redirect params[:referrer] || "/parts/#{params[:id]}"
     end
     get "/vendor_parts/:id/edit" do
@@ -555,13 +566,13 @@ module CheesyParts
               checklist_items.each do |entry|
                 checklist.add_item(entry)
               end
-              @part.save
+              @part.save(:columns => ["id", "part_number", "project_id", "type", "name", "parent_part_id", "notes", "status", "mfg-method", "finish", "quantity", "priority", "drawing_created", "rev", "rev_history", "trello_link"])
             end
           end
         end
       end
       @part.status = "ready"
-      @part.save
+      @part.save(:columns => ["id", "part_number", "project_id", "type", "name", "parent_part_id", "notes", "status", "mfg-method", "finish", "quantity", "priority", "drawing_created", "rev", "rev_history", "trello_link"])
       redirect "/parts/#{@part.id}"
     end
 

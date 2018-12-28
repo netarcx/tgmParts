@@ -48,7 +48,8 @@ class Part < Sequel::Model
                         .max(:part_number) || parent_part_number
       part_number += 1
     elsif type == "cots"
-      
+      # we'll overwrite part number later so who cares
+
     else
       part_number = Part.filter(:project_id => project.id, :type => "assembly").max(:part_number)  || -100
       part_number += 100
@@ -56,9 +57,13 @@ class Part < Sequel::Model
     new(:part_number => part_number, :project_id => project.id, :type => type,
         :parent_part_id => parent_part.nil? ? 0 : parent_part.id)
   end
-
+  
   def full_part_number
-    "#{project.part_number_prefix}-#{type == "assembly" ? "A" : "P"}-%04d" % part_number
+    if type == "cots"
+      "#{Vendor[notes].part_number_prefix}-%d" % part_number
+    else
+      "#{project.part_number_prefix}-#{type == "assembly" ? "A" : "P"}-%04d" % part_number
+    end
   end
 
   def increment_revision(rev)

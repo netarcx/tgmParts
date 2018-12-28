@@ -1,5 +1,5 @@
 <div id="vendor_parts">
-<select name="vendor_id">
+<select name="part_id">
   <% parts = VendorPart.where(:vendor_id => @vendor.id) %>
   <% parts.each do |cots| %>
     <option value="<%= cots.id %>">
