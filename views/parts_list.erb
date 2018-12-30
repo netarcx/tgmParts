@@ -18,7 +18,7 @@
       <% if part.type != "cots" %>
       <td><a href="/parts/<%= part.id %>"><%= part.name %></a></td>
       <% else %>
-      <td><a href="/vendor_parts/<%= part.rev %>"><%= VendorPart[part.rev].name %></a></td>
+      <td><a href="/vendor_parts/<%= part.rev %>"><%= VendorPart[part.vendor_part_id].name %></a></td>
       <% end %>
       <td>
         <% if part.parent_part %>

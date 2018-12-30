@@ -57,10 +57,10 @@ class Part < Sequel::Model
     new(:part_number => part_number, :project_id => project.id, :type => type,
         :parent_part_id => parent_part.nil? ? 0 : parent_part.id)
   end
-  
+
   def full_part_number
     if type == "cots"
-      "#{Vendor[notes].part_number_prefix}-%d" % part_number
+      "#{Vendor[vendor_id].part_number_prefix}-%d" % part_number
     else
       "#{project.part_number_prefix}-#{type == "assembly" ? "A" : "P"}-%04d" % part_number
     end

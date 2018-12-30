@@ -3,7 +3,7 @@
 <div class="container nav-sep">
   <div class="row">
     <div class="col">
-	     <h2><%= @part.type.capitalize %>: <% if @part.type == "cots" %> <%= VendorPart[@part.rev].name %> <% else %> <%= @part.name %> <% end %></h2>
+	     <h2><%= @part.type.capitalize %>: <% if @part.type == "cots" %> <%= VendorPart[@part.vendor_part_id].name %> <% else %> <%= @part.name %> <% end %></h2>
     </div>
     <div class="col">
       <div class="float-right">

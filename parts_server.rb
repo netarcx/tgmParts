@@ -337,14 +337,14 @@ module CheesyParts
       part.name = params[:name].gsub("\"", "&quot;")
       if params[:type] == "cots"
         part.part_number = VendorPart[params[:part_id]].part_number
-        part.notes = params[:vendor_id] #abuse notes to use as vendor id storage.. sorry
-        part.rev = params[:part_id] #abuse part revision to use as vendorpart id storage..
+        part.vendor_id = params[:vendor_id]
+        part.vendor_part_id = params[:part_id]
         part.quantity = params[:quantity]
       else
-        part.rev = ""
         part.quantity = ""
 
       end
+      part.rev = ""
       part.status = "designing"
       part.mfg_method = "Manual/Hand tools"
       part.finish = "None"
@@ -382,9 +382,7 @@ module CheesyParts
       @part = Part[params[:id]]
       halt(400, "Invalid part.") if @part.nil?
       halt(400, "Missing part name.") if @part.type!="cots" && params[:name] && params[:name].empty?
-      if @part.type == "cots"
-        @part.ucode = "DEFAULT"
-      end
+
       if params[:status]
         halt(400, "Invalid status.") unless Part::STATUS_MAP.include?(params[:status])
         @part.status = params[:status]
