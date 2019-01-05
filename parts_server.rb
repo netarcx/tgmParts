@@ -287,7 +287,7 @@ module CheesyParts
       # Check parameter existence and format.
       halt(400, "Missing vendor ID.") if params[:vendor_id].nil? || params[:vendor_id] !~ /^\d+$/
       halt(400, "Missing part name.") if params[:name].nil? || params[:name].empty?
-      halt(400, "Missing part number.") if params[:part_number].nil? || params[:part_number] !~ /^\d+$/
+      halt(400, "Missing part number.") if params[:part_number].nil?
       halt(400, "Missing unit cost.") if params[:unit_cost].nil? || params[:unit_cost] !~ /^\d+$/
       halt(400, "Missing qty_per_unit.") if params[:qty_per_unit].nil? || params[:qty_per_unit] !~ /^\d+$/
       halt(400, "Missing part link.") if params[:link].nil? || params[:link].empty?
@@ -448,7 +448,7 @@ module CheesyParts
         @part.notes = params[:notes] if params[:notes]
         @part.priority = params[:priority] if params[:priority]
       end
-      @part.save(:columns => ["id", "part_number", "project_id", "type", "name", "parent_part_id", "notes", "status", "mfg-method", "finish", "quantity", "priority", "drawing_created", "rev", "rev_history", "trello_link"])
+      @part.save_changes
       redirect params[:referrer] || "/parts/#{params[:id]}"
     end
     get "/vendor_parts/:id/edit" do
@@ -470,9 +470,9 @@ module CheesyParts
       @part.unit_cost = params[:unit_cost] if params[:unit_cost]
       @part.name = params[:name] if params[:name]
       @part.part_number = params[:part_number] if params[:part_number]
-      @part.link = params[:link] if params[:ulink]
+      @part.link = params[:link] if params[:link]
 
-      @part.save
+      @part.save_changes
       redirect params[:referrer] || "/vendor_parts/#{params[:id]}"
     end
     get "/parts/:id/release" do
@@ -564,13 +564,13 @@ module CheesyParts
               checklist_items.each do |entry|
                 checklist.add_item(entry)
               end
-              @part.save(:columns => ["id", "part_number", "project_id", "type", "name", "parent_part_id", "notes", "status", "mfg-method", "finish", "quantity", "priority", "drawing_created", "rev", "rev_history", "trello_link"])
+              @part.save_changes
             end
           end
         end
       end
       @part.status = "ready"
-      @part.save(:columns => ["id", "part_number", "project_id", "type", "name", "parent_part_id", "notes", "status", "mfg-method", "finish", "quantity", "priority", "drawing_created", "rev", "rev_history", "trello_link"])
+      @part.save_changes
       redirect "/parts/#{@part.id}"
     end
 

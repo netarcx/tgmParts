@@ -60,9 +60,9 @@ class Part < Sequel::Model
 
   def full_part_number
     if type == "cots"
-      "#{Vendor[vendor_id].part_number_prefix}-%d" % part_number
+      "#{Vendor[vendor_id].part_number_prefix}-%s" % part_number
     else
-      "#{project.part_number_prefix}-#{type == "assembly" ? "A" : "P"}-%04d" % part_number
+      "#{project.part_number_prefix}-#{type == "assembly" ? "A" : "P"}-%04d" % part_number.to_i
     end
   end
 
