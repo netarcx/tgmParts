@@ -18,9 +18,6 @@ class User < Sequel::Model
   Dir.chdir("public/themes/")
   THEMES_DIR = Dir["*.css"]
   THEMES_DIR.each { |x| THEMES[x.chomp(".css")]=x.chomp(".css")}
-
-  print THEMES
-
   Dir.chdir(fileroot)
 
   # Checks the given credentials against the database. Returns the user object on success and nil otherwise.

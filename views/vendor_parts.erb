@@ -1,0 +1,10 @@
+<div id="vendor_parts">
+<select name="part_id">
+  <% parts = VendorPart.where(:vendor_id => @vendor.id) %>
+  <% parts.each do |cots| %>
+    <option value="<%= cots.id %>">
+      <%= Vendor[id: cots.vendor_id].part_number_prefix %>-<%=cots.part_number%> | <%= cots.name %>
+    </option>
+  <% end %>
+</select>
+</div>

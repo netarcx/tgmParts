@@ -50,7 +50,11 @@
                     <a class="nav-link" href="/orders"><i class="mr-1 fas fa-shopping-cart"></i>Orders</a>
                   </li>
                 <% end %>
-
+                <% if @user.is_shoptech? %>
+                  <li class="nav-item ml-3">
+                    <a class="nav-link" href="/vendors"><i class="mr-1 fas fa-box-open"></i>Vendors</a>
+                  </li>
+                <% end %>
                 <% if @user.can_administer? %>
                   <li class="nav-item ml-3">
                     <a class="nav-link" href="/users"><i class="mr-1 fas fa-users"></i>Users</a>

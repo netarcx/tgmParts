@@ -1,7 +1,11 @@
 <%= erb :header %>
 
 <div class="container nav-sep">
+  <% if @type == "cots" %>
+  <h2>Add New COTS Part</h2>
+  <% else %>
   <h2>Create New <%= @type.capitalize %></h2>
+  <% end %>
   <hr>
 
   <form action="/parts" method="POST">
@@ -15,7 +19,40 @@
         <input type="hidden" name="project_id" value="<%= @project.id %>">
       </div>
     </div>
+    <% if @type == "cots" %>
+      <input type="hidden" name="name" value="COTS Part" />
+      <div class="row">
+        <div class="col-2">
+          <label class="float-right">Vendor</label>
+        </div>
+        <div class="col-4">
+          <select name="vendor_id" onchange="changeVendorPartFilter(this.value);">
+            <% Vendor.each do |vendor| %>
+            <option value="<%= vendor.id %>">
+              <%= vendor.part_number_prefix %> | <%= vendor.name %>
+            </option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2">
+          <label class="float-right">COTS Part</label>
+        </div>
+        <div class="col-4">
+          <%= erb :vendor_parts %>
 
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2">
+          <label class="float-right">Quantity</label>
+        </div>
+        <div class="col-4">
+          <input type="text" name = "quantity">
+        </div>
+      </div>
+    <% else %>
     <div class="row">
       <div class="col-2">
         <label class="float-right"><%= @type.capitalize %> Name</label>
@@ -24,7 +61,7 @@
         <input type="text" name="name" />
       </div>
     </div>
-
+    <% end %>
     <div class="row">
       <div class="col-2">
         <label class="float-right">Parent Assembly</label>

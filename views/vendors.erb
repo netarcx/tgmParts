@@ -1,0 +1,47 @@
+<%= erb :header %>
+
+<div class="container nav-sep">
+  <div class="row">
+    <div class="col">
+      <h2>Vendors</h2>
+    </div>
+    <div class="col">
+        <a href="/new_vendor" class="btn btn-success float-right">
+          New Vendor
+        </a>
+    </div>
+  </div>
+  <hr>
+
+  <% i = 0 %>
+  <div class="row justify-content-center" style="margin-top: 1em;">
+  <% Vendor.each do |vendor| %>
+    <div class="col-4">
+      <a href="/vendors/<%= vendor.id %>">
+        <div class="row">
+          <div class="col" align="center">
+            <%if File.exist?("./uploads/vendors/#{vendor.id}/avatar.png") %>
+              <img class="rounded" style="width:50px;height:50px;" src="./uploads/vendors/<%= vendor.id %>/avatar.png">
+            <%else %>
+              <img class="rounded" style="width:50px;height:50px;" src="/img/placeholder.png">
+            <%end %>
+          </div>
+        </div>
+        <div class="row" style="margin-top: .5em;">
+          <div class="col mx-auto" style="width: auto;">
+            <h4 class="text-center"><%= vendor.name %></h4>
+          </div>
+        </div>
+      </a>
+    </div>
+    <% i += 1 %>
+    <% if (i % 3 == 0) %>
+  </div>
+  <div class="row" style="margin-top: 1em;">
+    <% end %>
+  <% end %>
+  </div>
+</div>
+
+
+<%= erb :footer %>

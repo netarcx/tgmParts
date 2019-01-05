@@ -8,7 +8,7 @@ class Part < Sequel::Model
   many_to_one :parent_part, :class => self
   one_to_many :child_parts, :key => :parent_part_id, :class => self
 
-  PART_TYPES = ["part", "assembly"]
+  PART_TYPES = ["cots", "part", "assembly"]
 
   # The list of possible part statuses. Key: string stored in database, value: what is displayed to the user.
   STATUS_MAP = { "designing" => "Design in progress",
@@ -47,6 +47,9 @@ class Part < Sequel::Model
       part_number = Part.filter(:project_id => project.id, :parent_part_id => parent_part_id, :type => "part")
                         .max(:part_number) || parent_part_number
       part_number += 1
+    elsif type == "cots"
+      # we'll overwrite part number later so who cares
+
     else
       part_number = Part.filter(:project_id => project.id, :type => "assembly").max(:part_number)  || -100
       part_number += 100
@@ -56,7 +59,11 @@ class Part < Sequel::Model
   end
 
   def full_part_number
-    "#{project.part_number_prefix}-#{type == "assembly" ? "A" : "P"}-%04d" % part_number
+    if type == "cots"
+      "#{Vendor[vendor_id].part_number_prefix}-%s" % part_number
+    else
+      "#{project.part_number_prefix}-#{type == "assembly" ? "A" : "P"}-%04d" % part_number.to_i
+    end
   end
 
   def increment_revision(rev)

@@ -13,12 +13,15 @@
   </div>
 <% if @user.can_edit? %>
   <div class="row">
+
     <div class="col">
 	    <label class="float-right">Part Name</label>
     </div>
     <div class="col">
-	    <input type="text" name="name" value="<%= @part.name %>" />
+	    <input type="text" name="name" <% if @part.type = "cots" %> placeholder="<%= VendorPart[@part.vendor_part_id].name %>" readonly <% else %> value="<%= @part.name %>" <% end %>/>
+
     </div>
+    <% if @part.type != "cots" %>
     <div class="col">
       <label class="float-right">Manufacturing Method</label>
     </div>
@@ -31,6 +34,7 @@
 	      <% end %>
 	    </select>
     </div>
+    <% end %>
   </div>
 
   <div class="row">
@@ -40,6 +44,8 @@
     <div class="col">
       <input type="text" name="quantity" value="<%= @part.quantity %>" />
     </div>
+    <% if @part.type != "cots" %>
+
     <div class="col">
       <label class="float-right">Reset Current Revision</label>
     </div>
@@ -52,6 +58,7 @@
         <% end %>
       </select>
     </div>
+    <% end %>
   </div>
   <hr>
 <% end %>
@@ -86,15 +93,17 @@
         </div>
       </div>
     </div>
+    <% if @part.type != "cots" %>
     <div class="col-1">
       <label class="float-right">Notes</label>
     </div>
     <div class="col">
       <textarea style="width: 100%;" name="notes" rows="4"><%= @part.notes %></textarea>
     </div>
+    <% end %>
   </div>
 
-<% if @user.can_edit? %>
+<% if @user.can_edit? and @part.type != "cots"%>
   <hr>
 	<fieldset>
     <div class="row">

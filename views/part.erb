@@ -3,7 +3,7 @@
 <div class="container nav-sep">
   <div class="row">
     <div class="col">
-	     <h2><%= @part.type.capitalize %>: <%= @part.name %></h2>
+	     <h2><%= @part.type.capitalize %>: <% if @part.type == "cots" %> <%= VendorPart[@part.vendor_part_id].name %> <% else %> <%= @part.name %> <% end %></h2>
     </div>
     <div class="col">
       <div class="float-right">
@@ -63,10 +63,12 @@
           <td><b>Part Number</b></td>
           <td><%= @part.full_part_number %></td>
         </tr>
+        <% if @part.type != "cots" %>
         <tr>
           <td><b>Designer</b></td>
           <td><% #@TODO UPDATE PART MODEL @part.author %> Example Author</td>
         </tr>
+        <% end %>
         <tr>
           <td><b>Status</b></td>
           <td><span class="label label-status-<%= @part.status %>"><%= Part::STATUS_MAP[@part.status] %></span></td>
@@ -85,7 +87,10 @@
         <tr>
           <td><b>Quantity Required</b></td><td><%= @part.quantity %></td>
         </tr>
+        <% if @part.type != "cots" %>
+
         <tr>
+
           <td><b>Drawing Created?</b></td>
           <td><%= (@part.drawing_created == 1) ? "Yes" : "No" %></td>
         </tr>
@@ -93,6 +98,7 @@
           <td><b>Revision Letter</b></td>
           <td><%= @part.rev %></td>
         </tr>
+        <% end %>
 <%if @part.drawing_created == 1 %>
         <tr>
           <td><b>Drawing Link</b></td>
@@ -115,11 +121,13 @@
           <td><b>Priority</b></td>
           <td><%= Part::PRIORITY_MAP[@part.priority] %></td>
         </tr>
+        <% if @part.type != "cots" %>
+
         <tr>
           <td><b>Notes</b></td>
           <td><%= (@part.notes || "").gsub("\n", "<br />") %></td>
         </tr>
-
+        <% end %>
 <% if @part.trello_link != "" and CheesyCommon::Config.trello_enabled %>
       	<tr>
           <td><b>Trello Link</b></td>

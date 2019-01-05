@@ -15,7 +15,11 @@
     <tr>
       <td><a href="/parts/<%= part.id %>"><%= part.full_part_number %></a></td>
       <td><%= part.type.capitalize %></td>
+      <% if part.type != "cots" %>
       <td><a href="/parts/<%= part.id %>"><%= part.name %></a></td>
+      <% else %>
+      <td><a href="/vendor_parts/<%= part.rev %>"><%= VendorPart[part.vendor_part_id].name %></a></td>
+      <% end %>
       <td>
         <% if part.parent_part %>
           <a href="/parts/<%= part.parent_part.id %>"><%= part.parent_part.name if part.parent_part%></a>

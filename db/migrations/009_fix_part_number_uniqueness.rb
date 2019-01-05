@@ -6,6 +6,7 @@ Sequel.migration do
     end
   end
   down do
+    raise ActiveRecord::IrreversibleMigration
     alter_table(:parts) do
       drop_constraint :project_id_and_part_number, :type => :unique
       add_unique_constraint :part_number

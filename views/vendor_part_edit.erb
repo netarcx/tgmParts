@@ -1,0 +1,65 @@
+<%= erb :header %>
+
+<div class="container nav-sep">
+  <h2>Edit Vendor Part</h2>
+  <hr>
+
+  <form action="" method="POST" enctype="multipart/form-data">
+	<div class="row mb-4">
+	  <div class="col">
+	    <input type="hidden" name="referrer" value="<%= @referrer %>" />
+	    <label><span class="label label-info">Part Number</span> <%= @part.full_part_number %></label>
+    </div>
+  </div>
+<% if @user.is_shoptech? %>
+  <div class="row">
+    <div class="col">
+	    <label class="float-right">Part Name</label>
+    </div>
+    <div class="col">
+	    <input type="text" name="name" value="<%= @part.name %>" />
+    </div>
+    <div class="col">
+	    <label class="float-right">Part Number</label>
+    </div>
+    <div class="col">
+	    <input type="text" name="part_number" value="<%= @part.part_number %>" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label class="float-right">Quantity per Unit</label>
+    </div>
+    <div class="col">
+      <input type="text" name="qty_per_unit" value="<%= @part.qty_per_unit %>" />
+    </div>
+    <div class="col">
+      <label class="float-right">Unit Cost</label>
+    </div>
+    <div class="col">
+      <input type="text" name="unit_cost" value="<%= @part.unit_cost %>" />
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-3">
+      <label class="float-right">Link</label>
+    </div>
+    <div class="col-3">
+      <input type="text" name="link" value="<%= @part.link %>" />
+    </div>
+
+
+  </div>
+
+
+<% end %>
+  <div class="row mt-5">
+    <div class="col-12">
+      <button type="submit" class="btn btn-success btn-lg btn-block" >Save Part</button>
+    </div>
+  </div>
+</div>
+
+<%= erb :footer %>
