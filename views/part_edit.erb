@@ -18,7 +18,7 @@
 	    <label class="float-right">Part Name</label>
     </div>
     <div class="col">
-	    <input type="text" name="name" <% if @part.type = "cots" %> placeholder="<%= VendorPart[@part.vendor_part_id].name %>" readonly <% else %> value="<%= @part.name %>" <% end %>/>
+	    <input type="text" name="name" <% if @part.type == "cots" %> placeholder="<%= VendorPart[@part.vendor_part_id].name %>" readonly <% else %> value="<%= @part.name %>" <% end %>/>
 
     </div>
     <% if @part.type != "cots" %>
