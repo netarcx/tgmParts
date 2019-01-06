@@ -26,7 +26,7 @@ class Part < Sequel::Model
                  "assembly" => "Waiting for assembly",
                  "done" => "Done" }
   MFG_MAP = { "manual" => "Manual/hand tools",
-		"milled" => "Milled",
+		"milled" => "Milled/CNC",
 		"turned" => "Turned",
 		"printed" => "3D Printed",
 		"outsourced" => "Outsourced" }
