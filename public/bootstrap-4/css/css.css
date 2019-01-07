@@ -196,7 +196,7 @@ label {
   border-radius: 5px;
 }
 .dashboard-part {
-  width: 115px;
+  /* width: 115px; */
   height: 25px;
   line-height: 25px;
   text-align: center;
