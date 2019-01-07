@@ -46,13 +46,13 @@ class Part < Sequel::Model
     if type == "part"
       part_number = Part.filter(:project_id => project.id, :parent_part_id => parent_part_id, :type => "part")
                         .max(:part_number) || parent_part_number
-      part_number += 1
+      part_number = part_number.to_i + 1
     elsif type == "cots"
       # we'll overwrite part number later so who cares
 
     else
       part_number = Part.filter(:project_id => project.id, :type => "assembly").max(:part_number)  || -100
-      part_number += 100
+      part_number = part_number.to_i + 100
     end
     new(:part_number => part_number, :project_id => project.id, :type => type,
         :parent_part_id => parent_part.nil? ? 0 : parent_part.id)
