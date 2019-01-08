@@ -14,7 +14,13 @@
   <% parts.each do |part| %>
     <tr>
       <td><a href="/parts/<%= part.id %>"><%= part.full_part_number %></a></td>
-      <td><%= part.type.capitalize %></td>
+      <td>
+        <% if part.type != "cots" %>
+          <%= part.type.capitalize %>
+        <% elsif part.type == "cots" %>
+          <%= part.type.upcase %>
+        <% end %>
+      </td>
       <% if part.type != "cots" %>
       <td><a href="/parts/<%= part.id %>"><%= part.name %></a></td>
       <% else %>
