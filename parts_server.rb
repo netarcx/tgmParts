@@ -340,12 +340,15 @@ module CheesyParts
         part.vendor_id = params[:vendor_id]
         part.vendor_part_id = params[:part_id]
         part.quantity = params[:quantity]
+        part.status = "ordered"
+
       else
+        part.status = "designing"
+
         part.quantity = ""
 
       end
       part.rev = ""
-      part.status = "designing"
       part.mfg_method = "Manual/Hand tools"
       part.finish = "None"
       part.rev_history = ""
