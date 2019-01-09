@@ -341,10 +341,10 @@ module CheesyParts
         part.vendor_part_id = params[:part_id]
         part.quantity = params[:quantity]
         part.status = "ordered"
-
+        part.drawing_created = 1
       else
         part.status = "designing"
-
+        part.drawing_created = 0
         part.quantity = ""
 
       end
@@ -354,7 +354,6 @@ module CheesyParts
       part.rev_history = ""
       part.priority = 1
       part.trello_link = ""
-      part.drawing_created = 0
       part.save
       redirect "/parts/#{part.id}"
     end
