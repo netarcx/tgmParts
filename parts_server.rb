@@ -415,7 +415,6 @@ module CheesyParts
             f.write(file.read)
           end
           @part.rev = @part.increment_revision(@part.rev_history.split(",").last)
-
           if @part.rev == "A"
             @part.rev_history << @part.rev
           else
@@ -450,6 +449,8 @@ module CheesyParts
         @part.notes = params[:notes] if params[:notes]
         @part.priority = params[:priority] if params[:priority]
       end
+      @part.modified!(:rev_history)
+      @part.modified!(:rev)
       @part.save_changes
       redirect params[:referrer] || "/parts/#{params[:id]}"
     end
