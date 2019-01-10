@@ -340,18 +340,20 @@ module CheesyParts
         part.vendor_id = params[:vendor_id]
         part.vendor_part_id = params[:part_id]
         part.quantity = params[:quantity]
+        part.status = "ordered"
+        part.drawing_created = 1
       else
+        part.status = "designing"
+        part.drawing_created = 0
         part.quantity = ""
 
       end
       part.rev = ""
-      part.status = "designing"
       part.mfg_method = "Manual/Hand tools"
       part.finish = "None"
       part.rev_history = ""
       part.priority = 1
       part.trello_link = ""
-      part.drawing_created = 0
       part.save
       redirect "/parts/#{part.id}"
     end
@@ -413,7 +415,6 @@ module CheesyParts
             f.write(file.read)
           end
           @part.rev = @part.increment_revision(@part.rev_history.split(",").last)
-
           if @part.rev == "A"
             @part.rev_history << @part.rev
           else
@@ -454,6 +455,8 @@ module CheesyParts
         @part.notes = params[:notes] if params[:notes]
         @part.priority = params[:priority] if params[:priority]
       end
+      @part.modified!(:rev_history)
+      @part.modified!(:rev)
       @part.save_changes
       redirect params[:referrer] || "/parts/#{params[:id]}"
     end
