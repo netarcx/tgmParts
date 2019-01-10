@@ -428,16 +428,10 @@ module CheesyParts
           # Create directories if they do not exist already
           Dir.mkdir("./uploads/#{@part.full_part_number}") unless Dir.exist?("./uploads/#{@part.full_part_number}")
           Dir.mkdir("./uploads/#{@part.full_part_number}/toolpath") unless Dir.exist?("./uploads/#{@part.full_part_number}/toolpath")
-          if File.extname(file) == ".gcode"
-            File.delete("./uploads/#{@part.full_part_number}/toolpath/#{@part.full_part_number}.gcode") if File.exist?("./uploads/#{@part.full_part_number}/toolpath/#{@part.full_part_number}.gcode")
-            File.open("./uploads/#{@part.full_part_number}/toolpath/#{@part.full_part_number}.gcode", 'wb') do |f|
+          File.delete("./uploads/#{@part.full_part_number}/toolpath/#{@part.full_part_number}.dxf") if File.exist?("./uploads/#{@part.full_part_number}/toolpath/#{@part.full_part_number}.dxf")
+          File.open("./uploads/#{@part.full_part_number}/toolpath/#{@part.full_part_number}.dxf", 'wb') do |f|
               f.write(file.read)
-            end
-          else
-            File.delete("./uploads/#{@part.full_part_number}/toolpath/#{@part.full_part_number}.dxf") if File.exist?("./uploads/#{@part.full_part_number}/toolpath/#{@part.full_part_number}.dxf")
-            File.open("./uploads/#{@part.full_part_number}/toolpath/#{@part.full_part_number}.dxf", 'wb') do |f|
-              f.write(file.read)
-            end
+          end
         end
 
         if params[:mfg_method]

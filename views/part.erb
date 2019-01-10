@@ -111,10 +111,10 @@
           <td><a href="<%= "/uploads/" + @part.full_part_number + "/docs/" + @part.full_part_number + ".pdf" %>">Link</a></td>
         </tr>
 <% end %>
-<%if File.file?("./uploads/"+ @part.full_part_number + "/toolpath/" + @part.full_part_number + ".gcode") %>
+<%if File.file?("./uploads/"+ @part.full_part_number + "/toolpath/" + @part.full_part_number + ".dxf") %>
         <tr>
-          <td><b>Toolpath Link</b></td>
-          <td><a href="<%= "/uploads/" + @part.full_part_number + "/toolpath/" + @part.full_part_number + ".gcode" %>">Link</a></td>
+          <td><b>DXF Link</b></td>
+          <td><a href="<%= "/uploads/" + @part.full_part_number + "/toolpath/" + @part.full_part_number + ".dxf" %>">Link</a></td>
         </tr>
 <% end %>
         <tr>
