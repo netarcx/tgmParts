@@ -32,6 +32,8 @@ Our fork differs from 254's in a few ways:
 
 ## Deploying using Docker
 
+If you want to test-drive DBP, you can use Docker to quickly set up the server.
+
 Prerequisites:
  * [Docker](https://docs.docker.com/install/)
  * [Docker compose](https://docs.docker.com/compose/install/)
