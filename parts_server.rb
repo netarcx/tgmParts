@@ -288,7 +288,7 @@ module CheesyParts
       halt(400, "Missing vendor ID.") if params[:vendor_id].nil? || params[:vendor_id] !~ /^\d+$/
       halt(400, "Missing part name.") if params[:name].nil? || params[:name].empty?
       halt(400, "Missing part number.") if params[:part_number].nil?
-      halt(400, "Missing unit cost.") if params[:unit_cost].nil? || params[:unit_cost] !~ /^\d+$/
+	  halt(400, "Missing unit cost.") if params[:unit_cost].nil? || params[:unit_cost] !~ /^\d+\.*\d*$/
       halt(400, "Missing qty_per_unit.") if params[:qty_per_unit].nil? || params[:qty_per_unit] !~ /^\d+$/
       halt(400, "Missing part link.") if params[:link].nil? || params[:link].empty?
 
