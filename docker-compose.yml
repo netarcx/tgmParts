@@ -1,0 +1,35 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    expose:
+      - '3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: parts
+      MYSQL_USER: parts_admin
+      MYSQL_PASSWORD: 199deepblue
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile-migrations
+    depends_on:
+      - db
+    restart: on-failure
+
+volumes:
+  db_data:

@@ -30,12 +30,28 @@ Our fork differs from 254's in a few ways:
 1. Interface for use of COTS parts in assemblies
 1. Integration with GrabCAD or SW PDM
 
+## Deploying using Docker
+
+Prerequisites:
+ * [Docker](https://docs.docker.com/install/)
+ * [Docker compose](https://docs.docker.com/compose/install/)
+
+To run Deep Blue Parts in a container:
+
+1. Make sure Docker is running.
+2. Populate `config.json` with parameters for the dev and prod environments. `config.json.docker` contains all the presets you would need to run with the provided `docker-compose.yml`. Feel free to change the database, username, and password fields, as long as you do it in both the config and compose files.
+3. Find your private IP address. (Instructions in [Linux](https://www.linuxtrainingacademy.com/determine-public-ip-address-command-line-curl/), [Mac OS](http://osxdaily.com/2010/11/21/find-ip-address-mac/), [Windows](https://www.howtogeek.com/117371/how-to-find-your-computers-private-public-ip-addresses/)) and set that as `db-host` in `config.json`.
+4. Run `docker-compose up -d web`. This will build and run your Deep Blue Parts server in the background.
+5. Run `docker-compose run migration`. This will perform the database migration operations that are needed. You may need to run this more than once if an error occurs.
+6. You're now ready to access the DBP server at `localhost:9000` (or whatever port you set the config to)!
+7. When you want to stop the server, you can do so with `docker-compose down`.
+
 ## Development
 
 Prerequisites:
 
 * Ruby 2.3 and development packages
-* [Bundler](http://gembundler.com)
+* [Bundler](https://bundler.io/)
 * MySQL and development packages
 * g++ for installation of some dev packages (optional)
 
