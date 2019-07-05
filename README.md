@@ -1,8 +1,6 @@
 Deep Blue Parts
 ===========
 
-### This is a development branch and is not yet bug-free. We plan to have this branch merged and functional for Build Season 2019.
-
 Deep Blue Parts is a web-based system for tracking parts through the design and manufacture cycle. It assigns
 part numbers with which CAD files can be saved to version control and stores information about parts'
 current manufacturing status.
@@ -76,6 +74,8 @@ delete this account after having created your own admin account.
 Uploads are stored in `uploads/` and at this time can only be directly managed by logging into your server.
 
 ## Contributing
+
+If you encounter a bug, please create a GitHub issue and let us know so that we can look into it.
 
 If you have a suggestion for a new feature in Cheesy Parts, create an issue on GitHub or shoot an e-mail to
 [pat@patfairbank.com](mailto:pat@patfairbank.com). Or if you have some Ruby-fu and are feeling adventurous,
