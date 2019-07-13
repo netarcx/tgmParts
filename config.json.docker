@@ -1,6 +1,6 @@
 {
   "global": {
-    "db_host": "127.0.0.1",
+    "db_host": "db",
     "db_user": "parts_admin",
     "db_database": "parts",
     "port": 9000,
