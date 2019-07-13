@@ -39,12 +39,12 @@ Prerequisites:
 To run Deep Blue Parts in a container:
 
 1. Make sure Docker is running.
-2. Populate `config.json` with parameters for the dev and prod environments. `config.json.docker` contains all the presets you would need to run with the provided `docker-compose.yml`. Feel free to change the database, username, and password fields, as long as you do it in both the config and compose files.
-3. Find your private IP address. (Instructions in [Linux](https://www.linuxtrainingacademy.com/determine-public-ip-address-command-line-curl/), [Mac OS](http://osxdaily.com/2010/11/21/find-ip-address-mac/), [Windows](https://www.howtogeek.com/117371/how-to-find-your-computers-private-public-ip-addresses/)) and set that as `db-host` in `config.json`.
-4. Run `docker-compose up -d web`. This will build and run your Deep Blue Parts server in the background.
-5. Run `docker-compose run migration`. This will perform the database migration operations that are needed. You may need to run this more than once if an error occurs.
-6. You're now ready to access the DBP server at `localhost:9000` (or whatever port you set the config to)!
-7. When you want to stop the server, you can do so with `docker-compose down`.
+1. Populate `config.json` with parameters for the dev and prod environments. `config.json.docker` contains all the presets you would need to run with the provided `docker-compose.yml`. Feel free to change the database, username, and password fields, as long as you do it in both the config and compose files.
+1. Run `docker-compose up -d web`. This will build and run your Deep Blue Parts server in the background.
+1. Run `docker-compose run migrations`. This will perform the database migration operations that are needed. You may need to run this more than once if an error occurs.
+1. You're now ready to access the DBP server at `localhost:9000`! 
+1. See the text below the Development instructions to login.
+1. When you want to stop the server, you can do so with `docker-compose down`.
 
 ## Development
 
