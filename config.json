@@ -16,7 +16,7 @@
     },
   "dev": {
     "db_password": "199deepblue",
-    "gmail_password": "",
+    "gmail_password": "spam@netarcx.com",
     "members_url": ""
     },
   "prod": {
